@@ -1,5 +1,5 @@
 <template>
-	<form id="formulario" @submit.prevent="principal">
+	<form id="formulario" @submit.prevent="crearTerceros">
 		<div class="card m-3">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<h5 class="card-title" @click="asyncCall">Instrucciones</h5>
+				<h5 class="card-title" @click="recorrerArchivo">Instrucciones</h5>
 				<p class="card-text">Cargue los documentos en formato ___ tanto terceros como balance de prueba</p>
 
 				<label for="terceros-path" class="form-label mb-2">Terceros:</label>
