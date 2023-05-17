@@ -28,7 +28,7 @@
 					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar" @click="generarArchivo">
 						<i class="bi bi-download m-1"></i>
 					</button>
-					<button type="reset" class="btn btn-danger w-25" title="Limpiar">
+					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error=false">
 						<i class="bi bi-stars m-1"></i>
 					</button>
 				</div>
@@ -68,7 +68,6 @@ export default {
 			} catch (error) {
 				this.error=true
 				console.error(error);
-				
 			}
 		},
 		generarArchivo() {
