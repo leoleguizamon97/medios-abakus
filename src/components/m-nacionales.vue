@@ -1,13 +1,14 @@
 <template>
-	<div class="justify-content-center">
-		<div class="position-absolute top-50 start-50 translate-middle" style="">
-			<h1>Proximamente! :D</h1>
-		</div>
-	</div>
+	<div></div>
 </template>
 
 <script>
-	
+	export default {
+		name: 'm-nacionales',
+		props: {
+			msg: String
+		}
+	}
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
 		<nav class="navbar bg-body-tertiary h-50">
 			<div class="container-fluid">
 				<a class="navbar-brand">
-					<img src="./assets/rosa.webp" alt="A" width="30" height="30" class="d-inline-block align-text-top">
+					<img src="./assets/rosa.webp" alt="A" width="30" height="30" class="rounded d-inline-block align-text-top">
 					Powered by: Abakus Accounting
 				</a>
 			</div>
@@ -23,7 +23,6 @@
 		<div class="tab-pane fade show active" id="Distritales" role="tabpanel" aria-labelledby="nav-Distritales"
 			tabindex="0">
 			<distritales/>
-
 		</div>
 		<div class="tab-pane fade" id="Nacionales" role="tabpanel" aria-labelledby="nav-Nacionales" tabindex="0">
 			<nacionales />
@@ -47,7 +46,7 @@ export default {
 	name: 'App',
 	components: {
 		distritales,
-		nacionales
+		nacionales,
 	}
 }
 </script>
