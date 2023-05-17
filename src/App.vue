@@ -13,9 +13,9 @@
 				<button class="nav-link active" id="nav-Distritales" data-bs-toggle="tab" data-bs-target="#Distritales"
 					type="button" role="tab" aria-controls="nav-Distritales" aria-selected="true">Distritales</button>
 				<button class="nav-link" id="nav-Nacionales" data-bs-toggle="tab" data-bs-target="#Nacionales" type="button"
-					role="tab" aria-controls="nav-Nacionales" aria-selected="false" disabled>Nacionales</button>
+					role="tab" aria-controls="nav-Nacionales" aria-selected="false">Nacionales</button>
 				<button class="nav-link" id="nav-Donaciones" data-bs-toggle="tab" data-bs-target="#Donaciones" type="button"
-					role="tab" aria-controls="nav-Donaciones" aria-selected="false">+</button>
+					role="tab" aria-controls="nav-Donaciones" aria-selected="false" disabled>+</button>
 			</div>
 		</nav>
 	</div>
@@ -25,15 +25,15 @@
 			<distritales/>
 		</div>
 		<div class="tab-pane fade" id="Nacionales" role="tabpanel" aria-labelledby="nav-Nacionales" tabindex="0">
-			<nacionales />
+			<nacionales/>
 		</div>
 		<div class="tab-pane fade" id="Donaciones" role="tabpanel" aria-labelledby="nav-Donaciones" tabindex="0">
-			<nacionales />
+			<nacionales/>
 		</div>
 	</div>
 	<div id="footer" class="nav justify-content-center bg-body-tertiary fixed-bottom">
 		<a class="nav-tabContent navbar-brand" href="https://github.com/leoleguizamon97">
-			<img src="./assets/rosa.webp" width="15" height="15">
+			<img class="rounded" alt="ALLG" src="./assets/rosa.webp" width="15" height="15" >
 			anlleguizamongu
 		</a>
 	</div>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<formulario msg="Distritales"  class="h-25"/>
+		<formulario msg="Distritales"/>
 		<tabla/>
 	</div>
 
