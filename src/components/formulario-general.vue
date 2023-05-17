@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form id="formulario" @submit.prevent="recorrerArchivo">
 		<div class="card m-3">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
@@ -22,7 +22,7 @@
 					@change="guardarArchivoBalance">
 
 				<div class="d-flex my-2">
-					<button type="button" class="btn btn-primary w-50" title="Ejecutar" @click="recorrerArchivo">
+					<button type="submit" class="btn btn-primary w-50" title="Ejecutar">
 						Ejecutar
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
@@ -35,7 +35,6 @@
 				</div>
 				<p class="text-danger-emphasis bg-danger-subtle border border-danger-subtle" v-show="error"
 					style="text-align: center;">Hubo un error cargando el archivo. ¿Seguro que lo seleccionaste?</p>
-
 			</div>
 		</div>
 	</form>
@@ -93,6 +92,7 @@ export default {
 				this.error = true
 				console.error(error);
 			}
+			return(false)
 		},
 		generarArchivo() {
 
