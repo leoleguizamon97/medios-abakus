@@ -1,6 +1,6 @@
 <template>
 	<form id="formulario" @submit.prevent="principal">
-		<div class="card m-3">
+		<div class="card m-2">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
 					<label style="margin: 0px 15px;" for="año">Creacion de medios {{ msg }}</label>
@@ -12,14 +12,25 @@
 			<div class="card-body">
 				<h5 class="card-title">Instrucciones</h5>
 				<p class="card-text">Cargue los documentos en formato ___ tanto terceros como balance de prueba</p>
-
-				<label for="terceros-path" class="form-label mb-2">Terceros:</label>
-				<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
-					required @change="guardarPathTerceros">
-
-				<label for="balance-path" class="form-label mb-2">Balance de prueba:</label>
-				<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt" required
-					@change="guardarPathBalance">
+				<div class="d-flex">
+					<div class="w-75">
+						<label for="terceros-path" class="form-label">Terceros:</label>
+						<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
+							required @change="guardarPathTerceros">
+						<label for="balance-path" class="form-label">Balance de prueba:</label>
+						<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt"
+							required @change="guardarPathBalance">
+					</div>
+						<div class="btn-group-vertical ms-1 w-25" role="group" aria-label="articulos">
+							<div class="w-100" style="text-align: center;">Articulos</div>
+							<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked @click="setArticulo(1)">
+							<label class="btn btn-outline-secondary" for="btnradio1">123</label>
+							<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" @click="setArticulo(2)">
+							<label class="btn btn-outline-secondary" for="btnradio2">123</label>
+							<input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" @click="setArticulo(3)">
+							<label class="btn btn-outline-secondary" for="btnradio3">123</label>
+						</div>
+				</div>
 
 				<div class="d-flex my-2">
 					<button type="submit" class="btn btn-primary w-50" title="Ejecutar">
