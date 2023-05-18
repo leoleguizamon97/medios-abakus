@@ -1,5 +1,5 @@
 <template>
-	<form id="formulario" @submit.prevent="recorrerArchivo">
+	<form id="formulario" @submit.prevent="principal">
 		<div class="card m-3">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
@@ -15,18 +15,19 @@
 
 				<label for="terceros-path" class="form-label mb-2">Terceros:</label>
 				<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
-					required @change="guardarArchivoTerceros">
+					required @change="guardarPathTerceros">
 
 				<label for="balance-path" class="form-label mb-2">Balance de prueba:</label>
 				<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt" required
-					@change="guardarArchivoBalance">
+					@change="guardarPathBalance">
 
 				<div class="d-flex my-2">
 					<button type="submit" class="btn btn-primary w-50" title="Ejecutar">
 						Ejecutar
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
-					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar" @click="generarArchivo">
+					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
+						@click="generarArchivo(this.terceros, 'desdePC')">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -47,60 +48,80 @@ export default {
 		msg: String
 	},
 	methods: {
-		guardarArchivoTerceros(evento) {
-			console.log(evento);
+		//Obtencion informacion de form
+		guardarPathTerceros(evento) {
 			this.archivoTerceros = evento.target.files[0];
 		},
-		guardarArchivoBalance(evento) {
-			console.log(evento);
+		guardarPathBalance(evento) {
 			this.archivoBalance = evento.target.files[0];
 		},
-		recorrerArchivo() {
-			try {
+		//Manejo de informacion
+		limpiar(){
+			this.terceros = new Array();
+			this.balance = new Array();
+		},
+		crearTerceros() {
+			return new Promise(resolve => {
+				console.log('ENTRO')
+				console.log(this.terceros)
+				this.terceros.forEach(p => {
+					console.log(p);
+					var persona = new Array()
+					p.split(';').forEach(
+						atributo => { persona.push(atributo) }
+					);
+					this.personas.push(persona)
+				});
+				resolve('resolved')
+			})
+		},
+		generarArchivo(contenido, filen) {
+			return new Promise(resolve => {
+				const enlace = document.createElement("a");
+				const nombre = filen + '.txt'
+				enlace.setAttribute(
+					"href",
+					"data:text/plain;charset=utf-8," + encodeURIComponent(contenido)
+				);
+				enlace.setAttribute("download", nombre);
+				enlace.style.display = "none";
+				document.body.appendChild(enlace);
+				enlace.click();
+				document.body.removeChild(enlace);
+				resolve('resolved')
+			})
+		},
+		//Cargar documentos
+		cargarArchivoTerceros() {
+			return new Promise((resolve, reject) => {
 				const lector = new FileReader();
 				lector.readAsText(this.archivoTerceros);
 				lector.onload = () => {
-					const contenido = lector.result;
-					const lineas = contenido.split('\n')
-					console.log(lineas.length);
+					const lineas = lector.result.split('\n')
+					console.log(lineas.length + '<- Cantidad de lineas terceros');
 					lineas.forEach(linea => {
 						this.terceros.push(linea)
-						console.log(linea);
-					});
-				};
-				this.error = false
-				console.log('pasoooo');
-			} catch (error) {
-				this.error = true
-				console.error(error);
-			}
-			try {
-				const lector = new FileReader();
-				lector.readAsText(this.archivoBalance);
-				lector.onload = () => {
-					const contenido = lector.result;
-					const lineas = contenido.split('\n')
-					console.log(lineas.length);
-					lineas.forEach(linea => {
-						this.balance.push(linea)
-						console.log(linea);
-					});
-				};
-				this.error = false
-				console.log('pasoooo');
-			} catch (error) {
-				this.error = true
-				console.error(error);
-			}
-			return(false)
+					})
+					console.log('resultado'+this.terceros);
+					resolve('Cargado')
+				}
+				lector.onerror = reject
+			});
 		},
-		generarArchivo() {
+		principal() {
+			this.limpiar()
+			this.cargarArchivoTerceros().then( () => {
+				this.crearTerceros();
+				this.generarArchivo(this.terceros,'prro')
+			})
 
-		}
+		},
 	},
+
 	data() {
 		return {
 			terceros: new Array(),
+			personas: new Array(),
 			balance: new Array(),
 			archivoTerceros: null,
 			archivoBalance: null,
