@@ -5,7 +5,7 @@
 				<div class="d-flex align-items-center justify-content-between">
 					<label style="margin: 0px 15px;" for="año">Creacion de medios {{ msg }}</label>
 					<input ref="año" type="number" name="año" id="año" class="form-control"
-						style="margin: 5px 0px; width: 10%; min-width: 100px;" placeholder="Año" value=2023
+						style="margin: 5px 0px; width: 10%; min-width: 100px;" placeholder="Año" value="2023"
 						inputmode="numeric" required>
 				</div>
 			</div>
@@ -60,6 +60,9 @@ export default {
 	},
 	methods: {
 		//Obtencion informacion de form
+		setArticulo(value){
+			this.articulo = value;
+		},
 		guardarPathTerceros(evento) {
 			this.archivoTerceros = evento.target.files[0];
 		},
@@ -129,6 +132,7 @@ export default {
 
 	data() {
 		return {
+			articulo: 1,
 			terceros: new Array(),
 			personas: new Array(),
 			balance: new Array(),
