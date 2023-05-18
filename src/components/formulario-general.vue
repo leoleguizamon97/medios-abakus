@@ -1,5 +1,5 @@
 <template>
-	<form id="formulario" @submit.prevent="crearTerceros">
+	<form id="formulario" @submit.prevent="principal">
 		<div class="card m-3">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
@@ -10,23 +10,24 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<h5 class="card-title" @click="recorrerArchivo">Instrucciones</h5>
+				<h5 class="card-title">Instrucciones</h5>
 				<p class="card-text">Cargue los documentos en formato ___ tanto terceros como balance de prueba</p>
 
 				<label for="terceros-path" class="form-label mb-2">Terceros:</label>
 				<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
-					required @change="guardarArchivoTerceros">
+					required @change="guardarPathTerceros">
 
 				<label for="balance-path" class="form-label mb-2">Balance de prueba:</label>
 				<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt" required
-					@change="guardarArchivoBalance">
+					@change="guardarPathBalance">
 
 				<div class="d-flex my-2">
 					<button type="submit" class="btn btn-primary w-50" title="Ejecutar">
 						Ejecutar
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
-					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar" @click="crearTerceros">
+					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
+						@click="generarArchivo(this.terceros, 'desdePC')">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -48,75 +49,33 @@ export default {
 	},
 	methods: {
 		//Obtencion informacion de form
-		guardarArchivoTerceros(evento) {
+		guardarPathTerceros(evento) {
 			this.archivoTerceros = evento.target.files[0];
 		},
-		guardarArchivoBalance(evento) {
-			//console.log(evento);
+		guardarPathBalance(evento) {
 			this.archivoBalance = evento.target.files[0];
 		},
-		//Procesamiento de datos
-		async recorrerArchivo() {
-			return new Promise(resolve => {
-				this.terceros = new Array()
-				this.balance = new Array()
-				try {
-					const lector = new FileReader();
-					lector.readAsText(this.archivoTerceros);
-					lector.onload = () => {
-						const contenido = lector.result;
-						const lineas = contenido.split('\n')
-						
-						console.log(lineas.length + '<- Cantidad de lineas terceros');
-						
-						lineas.forEach(linea => {
-							this.terceros.push(linea)
-							//console.log(linea);
-						});
-					};
-					this.error = false
-				} catch (error) {
-					this.error = true
-					console.error(error);
-				}
-				try {
-					const lector = new FileReader();
-					lector.readAsText(this.archivoBalance);
-					lector.onload = () => {
-						const contenido = lector.result;
-						const lineas = contenido.split('\n')
-						console.log(lineas.length + '<- Cantidad de lineas balance');
-						lineas.forEach(linea => {
-							this.balance.push(linea)
-							//console.log(linea);
-						});
-					};
-					this.error = false
-				} catch (error) {
-					this.error = true
-					console.error(error);
-				}
-				console.log(this.terceros);
-				this.generarArchivo
-				resolve('resolved');
-			});
+		//Manejo de informacion
+		limpiar(){
+			this.terceros = new Array();
+			this.balance = new Array();
 		},
-		async crearTerceros() {
+		crearTerceros() {
 			return new Promise(resolve => {
 				console.log('ENTRO')
-				console.log(this.terceros[0])
 				console.log(this.terceros)
-				console.log(this.terceros)
-				var persona = new Array()
-				this.terceros[0].split(';').forEach(
+				this.terceros.forEach(p => {
+					console.log(p);
+					var persona = new Array()
+					p.split(';').forEach(
 						atributo => { persona.push(atributo) }
 					);
 					this.personas.push(persona)
-				resolve('resolved')
 				});
-				
+				resolve('resolved')
+			})
 		},
-		async generarArchivo(contenido, filen) {
+		generarArchivo(contenido, filen) {
 			return new Promise(resolve => {
 				const enlace = document.createElement("a");
 				const nombre = filen + '.txt'
@@ -132,10 +91,31 @@ export default {
 				resolve('resolved')
 			})
 		},
-		async principal() {
-			this.recorrerArchivo().then(this.crearTerceros)
+		//Cargar documentos
+		cargarArchivoTerceros() {
+			return new Promise((resolve, reject) => {
+				const lector = new FileReader();
+				lector.readAsText(this.archivoTerceros);
+				lector.onload = () => {
+					const lineas = lector.result.split('\n')
+					console.log(lineas.length + '<- Cantidad de lineas terceros');
+					lineas.forEach(linea => {
+						this.terceros.push(linea)
+					})
+					console.log('resultado'+this.terceros);
+					resolve('Cargado')
+				}
+				lector.onerror = reject
+			});
 		},
+		principal() {
+			this.limpiar()
+			this.cargarArchivoTerceros().then( () => {
+				this.crearTerceros();
+				this.generarArchivo(this.terceros,'prro')
+			})
 
+		},
 	},
 
 	data() {
