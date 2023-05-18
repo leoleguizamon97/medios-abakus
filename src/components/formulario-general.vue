@@ -56,7 +56,7 @@ export default {
 			this.archivoBalance = evento.target.files[0];
 		},
 		//Manejo de informacion
-		limpiar(){
+		limpiar() {
 			this.terceros = new Array();
 			this.balance = new Array();
 		},
@@ -102,7 +102,7 @@ export default {
 					lineas.forEach(linea => {
 						this.terceros.push(linea)
 					})
-					console.log('resultado'+this.terceros);
+					console.log('resultado' + this.terceros);
 					resolve('Cargado')
 				}
 				lector.onerror = reject
@@ -110,11 +110,9 @@ export default {
 		},
 		principal() {
 			this.limpiar()
-			this.cargarArchivoTerceros().then( () => {
+			this.cargarArchivoTerceros().then(() => {
 				this.crearTerceros();
-				this.generarArchivo(this.terceros,'prro')
 			})
-
 		},
 	},
 
