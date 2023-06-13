@@ -26,10 +26,10 @@
 						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
 					<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
-						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(4)" disabled>
+						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(3)" disabled>
 					<label class="btn btn-outline-secondary" for="btnradio2">Art 3</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
-						data-bs-target="#base4" name="btnradio" id="btnradio3" @click="setArticulo(6)">
+						data-bs-target="#base4" name="btnradio" id="btnradio3" @click="setArticulo(4)">
 					<label class="btn btn-outline-secondary" for="btnradio3">Art 4</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
 						data-bs-target="#base6" name="btnradio" id="btnradio4" @click="setArticulo(6)">
@@ -163,18 +163,16 @@ export default {
 					var nombreEmpresa = "";
 					var inicial = 0;
 					console.log(lineas.length + '<- Cantidad de lineas Balance');
-
 					lineas.forEach(linea => {
-						var lineatemp = linea.replace(/\s+/g, '')
 						if (inicial == 0) {
-							nombreEmpresa = lineatemp;
-							//console.log('Nombre de empresa: '+nombreEmpresa);
+							nombreEmpresa = linea.replaceAll('"','')
+							console.log('Nombre de empresa: '+nombreEmpresa);
 							inicial += 1;
-						} else if (linea.replace(/\s+/g, '') == nombreEmpresa) {
-							//console.log('Se omitio esta linea:- '+inicial+linea);
+						} else if (linea.replaceAll('"','') == nombreEmpresa) {
+							console.log('Se omitio esta linea:- '+inicial+linea);
 							inicial = 1
 						} else if (inicial != -1) {
-							//console.log('Se omitio esta linea: '+inicial+linea);
+							console.log('Se omitio esta linea: '+inicial+linea);
 							inicial += 1;
 							if (inicial == 4) {
 								inicial = -1;
@@ -183,7 +181,6 @@ export default {
 							this.cuentas.push(linea)
 						}
 					})
-
 					console.log('resultado' + this.cuentas);
 					resolve('Cargado')
 				}
@@ -208,7 +205,6 @@ export default {
 			}
 		},
 	},
-
 	data() {
 		return {
 			articulo: 2,
@@ -224,7 +220,6 @@ export default {
 			error: false,
 		}
 	},
-
 	components: {
 		tabla,
 		bases,
