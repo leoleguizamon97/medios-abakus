@@ -2,7 +2,6 @@
 	<div>
 		<formulario msg="Distritales"/>
 	</div>
-
 </template>
 
 <script>

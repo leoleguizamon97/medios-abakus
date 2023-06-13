@@ -20,14 +20,13 @@
 		</nav>
 	</div>
 	<div id="Contenido" class="tab-content">
-		<div class="tab-pane fade show active" id="Distritales" role="tabpanel" aria-labelledby="nav-Distritales"
-			tabindex="0">
+		<div class="tab-pane fade show active" id="Distritales" role="tabpanel" aria-labelledby="nav-Distritales" tabindex="0">
 			<distritales ref="Esto es un mensaje de prueba"/>
 		</div>
-		<div class="tab-pane fade" id="Nacionales" role="tabpanel" aria-labelledby="nav-Nacionales" tabindex="0">
+		<div class="tab-pane fade" id="Nacionales" role="tabpanel" aria-labelledby="nav-Nacionales" tabindex="1">
 			<nacionales/>
 		</div>
-		<div class="tab-pane fade" id="Donaciones" role="tabpanel" aria-labelledby="nav-Donaciones" tabindex="0">
+		<div class="tab-pane fade" id="Donaciones" role="tabpanel" aria-labelledby="nav-Donaciones" tabindex="2">
 			<nacionales/>
 		</div>
 	</div>
