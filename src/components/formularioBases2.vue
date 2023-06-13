@@ -1,5 +1,5 @@
 <template>
-	<label for="input-group" class="form-label">Base cuentas{{ msg }}</label>
+	<label for="input-group" class="form-label">OTROS: {{ msg }}</label>
 	<div class="flex-column" id="Bases">
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="cuenta01">Cuenta -0555</span>

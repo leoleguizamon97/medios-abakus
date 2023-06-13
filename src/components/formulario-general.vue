@@ -23,26 +23,23 @@
 					</div>
 					<div class="btn-group-vertical w-25 m-1 nav" role="group" aria-label="articulos">
 						<div class="w-100" style="text-align: center;">Articulos</div>
-						
 						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
 						<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
-						
-						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base46" name="btnradio" id="btnradio2" @click="setArticulo(4)">
+						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base4" name="btnradio" id="btnradio2" @click="setArticulo(4)">
 						<label class="btn btn-outline-secondary" for="btnradio2">Art 4</label>
-						
-						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base46" name="btnradio" id="btnradio3" @click="setArticulo(6)">
+						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base6" name="btnradio" id="btnradio3" @click="setArticulo(6)">
 						<label class="btn btn-outline-secondary" for="btnradio3">Art 6</label>
 					</div>
 				</div>
 				<div id="Bases" class="tab-content">
-					<div class="tab-pane fade" id="base2" role="tabpanel" aria-labelledby="btnradio1" tabindex="0">
-						<bases2 ref="Cuenta: 2368"/>
+					<div class="tab-pane fade" id="base2" aria-labelledby="btnradio1" tabindex="1">
+						<bases2 msg="otros"/>
 					</div>
-					<div class="tab-pane fade" id="base46" role="tabpanel" aria-labelledby="btnradio2" tabindex="1">
-						<bases ref="Cuenta: 2368"/>
+					<div class="tab-pane fade" id="base4" aria-labelledby="btnradio2" tabindex="2">
+						<bases msg="2368"/>
 					</div>
-					<div class="tab-pane fade" id="base46" role="tabpanel" aria-labelledby="btnradio3" tabindex="2">
-						<bases ref="Cuenta: 2368"/>
+					<div class="tab-pane fade" id="base6" aria-labelledby="btnradio3" tabindex="3">
+						<bases msg="135518"/>
 					</div>
 				</div>
 				<div class="d-flex my-2">

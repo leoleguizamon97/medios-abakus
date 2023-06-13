@@ -1,5 +1,5 @@
 <template>
-	<label for="input-group" class="form-label">Base cuentas</label>
+	<label for="input-group" class="form-label">Bases de cuenta: {{ msg }}</label>
 	<div class="flex-column" id="Bases">
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="cuenta01">Cuenta -01</span>
@@ -29,6 +29,21 @@
 </template>
 
 <script>
+export default {
+	name: 'basesA46',
+	props: {
+		msg: String
+	},
+	methods: {
+	},
+
+	data() {
+		return {
+		}
+	},
+	components: {
+	}
+};
 </script>
 
 <style scoped></style>
