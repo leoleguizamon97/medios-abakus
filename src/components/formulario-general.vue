@@ -113,7 +113,7 @@ export default {
 			return new Promise(resolve => {
 				this.cuentas.forEach(p => {
 					var cuenta = new Array()
-					p.split('"').forEach(
+					p.split(';').forEach(
 						atributo => { cuenta.push(atributo) }
 					);
 					this.balance.push(cuenta)
@@ -165,10 +165,10 @@ export default {
 					console.log(lineas.length + '<- Cantidad de lineas Balance');
 					lineas.forEach(linea => {
 						if (inicial == 0) {
-							nombreEmpresa = linea.replaceAll('"','')
+							nombreEmpresa = linea.replaceAll(';','')
 							console.log('Nombre de empresa: '+nombreEmpresa);
 							inicial += 1;
-						} else if (linea.replaceAll('"','') == nombreEmpresa) {
+						} else if (linea.replaceAll(';','') == nombreEmpresa) {
 							console.log('Se omitio esta linea:- '+inicial+linea);
 							inicial = 1
 						} else if (inicial != -1) {
