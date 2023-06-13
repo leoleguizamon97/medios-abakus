@@ -10,36 +10,40 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<h5 class="card-title">Instrucciones</h5>
-				<p class="card-text">Cargue los documentos en formato ___ tanto terceros como balance de prueba</p>
-				<div class="d-flex">
-					<div class="w-75">
-						<label for="terceros-path" class="form-label">Terceros:</label>
-						<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
-							required @change="guardarPathTerceros">
-						<label for="balance-path" class="form-label">Balance de prueba:</label>
-						<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt"
-							required @change="guardarPathBalance">
-					</div>
-					<div class="btn-group-vertical w-25 m-1 nav" role="group" aria-label="articulos">
-						<div class="w-100" style="text-align: center;">Articulos</div>
-						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
-						<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
-						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base4" name="btnradio" id="btnradio2" @click="setArticulo(4)">
-						<label class="btn btn-outline-secondary" for="btnradio2">Art 4</label>
-						<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab" data-bs-target="#base6" name="btnradio" id="btnradio3" @click="setArticulo(6)">
-						<label class="btn btn-outline-secondary" for="btnradio3">Art 6</label>
-					</div>
+				<h5 class="card-title text-center">Instrucciones</h5>
+				<p class="card-text">Cargue los documentos en formato txt o csv. Tanto terceros como balance de prueba</p>
+				<div class="w-100">
+					<label for="terceros-path" class="form-label">Terceros:</label>
+					<input class="form-control" type="file" id="terceros-path" ref="terceros" placeholder="terceros.txt"
+						required @change="guardarPathTerceros">
+					<label for="balance-path" class="form-label">Balance de prueba:</label>
+					<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt"
+						required @change="guardarPathBalance">
+				</div>
+				<div class="w-100 m-1" style="text-align: center;">Articulos</div>
+				<div class="btn-group m-1 nav" role="group" aria-label="articulos">
+					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
+						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
+					<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
+					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
+						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(4)" disabled>
+					<label class="btn btn-outline-secondary" for="btnradio2">Art 3</label>
+					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
+						data-bs-target="#base4" name="btnradio" id="btnradio3" @click="setArticulo(6)">
+					<label class="btn btn-outline-secondary" for="btnradio3">Art 4</label>
+					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
+						data-bs-target="#base6" name="btnradio" id="btnradio4" @click="setArticulo(6)">
+					<label class="btn btn-outline-secondary" for="btnradio4">Art 6</label>
 				</div>
 				<div id="Bases" class="tab-content">
 					<div class="tab-pane fade" id="base2" aria-labelledby="btnradio1" tabindex="1">
-						<bases2 msg="otros"/>
+						<bases2 msg="otros" />
 					</div>
 					<div class="tab-pane fade" id="base4" aria-labelledby="btnradio2" tabindex="2">
-						<bases msg="2368"/>
+						<bases msg="2368" />
 					</div>
 					<div class="tab-pane fade" id="base6" aria-labelledby="btnradio3" tabindex="3">
-						<bases msg="135518"/>
+						<bases msg="135518" />
 					</div>
 				</div>
 				<div class="d-flex my-2">
@@ -163,20 +167,20 @@ export default {
 
 					lineas.forEach(linea => {
 						var lineatemp = linea.replace(/\s+/g, '')
-						if(inicial==0){
+						if (inicial == 0) {
 							nombreEmpresa = lineatemp;
 							//console.log('Nombre de empresa: '+nombreEmpresa);
-							inicial+=1;
-						}else if(linea.replace(/\s+/g, '') == nombreEmpresa){
+							inicial += 1;
+						} else if (linea.replace(/\s+/g, '') == nombreEmpresa) {
 							//console.log('Se omitio esta linea:- '+inicial+linea);
 							inicial = 1
-						}else if(inicial != -1){
+						} else if (inicial != -1) {
 							//console.log('Se omitio esta linea: '+inicial+linea);
-							inicial+=1;
-							if(inicial == 4){
-								inicial= -1;
+							inicial += 1;
+							if (inicial == 4) {
+								inicial = -1;
 							}
-						}else{
+						} else {
 							this.cuentas.push(linea)
 						}
 					})
@@ -196,11 +200,11 @@ export default {
 				this.crearBalance();
 			})
 			//Decide cual articulo realizar
-			if(this.articulo == 2){
+			if (this.articulo == 2) {
 				console.log('Se ejecutara el articulo 2');
-			}else if(this.articulo == 3){
+			} else if (this.articulo == 3) {
 				console.log('Se ejecutara el articulo 3');
-			}else if(this.articulo == 4){
+			} else if (this.articulo == 4) {
 				console.log('Se ejecutara el articulo 4');
 			}
 		},
