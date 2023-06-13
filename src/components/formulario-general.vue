@@ -82,7 +82,6 @@ export default {
 		//Obtencion informacion de form
 		setArticulo(value) {
 			this.articulo = value;
-
 		},
 		guardarPathTerceros(evento) {
 			this.archivoTerceros = evento.target.files[0];
@@ -114,7 +113,7 @@ export default {
 			return new Promise(resolve => {
 				this.cuentas.forEach(p => {
 					var cuenta = new Array()
-					p.split(';').forEach(
+					p.split('"').forEach(
 						atributo => { cuenta.push(atributo) }
 					);
 					this.balance.push(cuenta)
