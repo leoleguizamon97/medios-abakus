@@ -22,6 +22,7 @@
 			</tbody>
 		</table>
 	</div>
+	
 </template>
 
 <script>
@@ -29,7 +30,7 @@ export default {
 	name: 'resultados-generales',
 	props: {
 		msg: String
-	}
+	},
 }
 </script>
 

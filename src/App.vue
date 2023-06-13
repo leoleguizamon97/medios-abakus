@@ -10,19 +10,19 @@
 		</nav>
 		<nav class="bg-body-tertiary h-50">
 			<div class="nav nav-tabs" id="nav-tab" role="tablist">
-				<button class="nav-link active" id="nav-Distritales" data-bs-toggle="tab" data-bs-target="#Distritales"
-					type="button" role="tab" aria-controls="nav-Distritales" aria-selected="true">Distritales</button>
-				<button class="nav-link" id="nav-Nacionales" data-bs-toggle="tab" data-bs-target="#Nacionales" type="button"
-					role="tab" aria-controls="nav-Nacionales" aria-selected="false">Nacionales</button>
-				<button class="nav-link" id="nav-Donaciones" data-bs-toggle="tab" data-bs-target="#Donaciones" type="button"
-					role="tab" aria-controls="nav-Donaciones" aria-selected="false" disabled>+</button>
+				<button class="nav-link active" id="nav-Distritales" data-bs-toggle="tab" data-bs-target="#Distritales" type="button" role="tab" aria-controls="nav-Distritales" aria-selected="true">
+				Distritales</button>
+				<button class="nav-link" id="nav-Nacionales" data-bs-toggle="tab" data-bs-target="#Nacionales" type="button" role="tab" aria-controls="nav-Nacionales" aria-selected="false">
+				Nacionales</button>
+				<button class="nav-link" id="nav-Donaciones" data-bs-toggle="tab" data-bs-target="#Donaciones" type="button" role="tab" aria-controls="nav-Donaciones" aria-selected="false" disabled>
+				+</button>
 			</div>
 		</nav>
 	</div>
 	<div id="Contenido" class="tab-content">
 		<div class="tab-pane fade show active" id="Distritales" role="tabpanel" aria-labelledby="nav-Distritales"
 			tabindex="0">
-			<distritales/>
+			<distritales ref="Esto es un mensaje de prueba"/>
 		</div>
 		<div class="tab-pane fade" id="Nacionales" role="tabpanel" aria-labelledby="nav-Nacionales" tabindex="0">
 			<nacionales/>
