@@ -5,7 +5,7 @@
 				<div class="d-flex align-items-center justify-content-between">
 					<label style="margin: 0px 15px;" for="año">Creacion de medios {{ msg }}</label>
 					<input ref="año" type="number" name="año" id="año" class="form-control"
-						style="margin: 5px 0px; width: 10%; min-width: 100px;" placeholder="Año" value="2023"
+						style="margin: 5px 0px; width: 10%; min-width: 100px;" placeholder="Año" defaultValue="2023"
 						inputmode="numeric" required>
 				</div>
 			</div>
@@ -21,20 +21,21 @@
 						<input class="form-control" type="file" id="balance-path" ref="balance" placeholder="balance.txt"
 							required @change="guardarPathBalance">
 					</div>
-					<div class="btn-group-vertical w-25 m-1" role="group" aria-label="articulos" required>
+					<div class="btn-group-vertical w-25 m-1" role="group" aria-label="articulos">
 						<div class="w-100" style="text-align: center;">Articulos</div>
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" @click="setArticulo(2)" checked>
+						
+						<input required type="radio" class="btn-check form-check-input" name="btnradio" id="btnradio1" @click="setArticulo(2)">
 						<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"	@click="setArticulo(3)">
-						<label class="btn btn-outline-secondary" for="btnradio2">Art 3</label>
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"	@click="setArticulo(4)">
-						<label class="btn btn-outline-secondary" for="btnradio3">Art 4</label>
+						
+						<input required type="radio" class="btn-check form-check-input" name="btnradio" id="btnradio2" @click="setArticulo(4)">
+						<label class="btn btn-outline-secondary" for="btnradio2">Art 4</label>
+						
+						<input required type="radio" class="btn-check form-check-input" name="btnradio" id="btnradio3" @click="setArticulo(6)">
+						<label class="btn btn-outline-secondary" for="btnradio3">Art 6</label>
 					</div>
 				</div>
-				<div id="Contenido" class="tab-content">
-					<div class="tab-pane fade show active" id="bases" role="tabpanel" aria-labelledby="nav-Distritales" tabindex="0">
-						<bases/>
-					</div>
+				<div id="Bases">
+					<bases/>
 				</div>
 				<div class="d-flex my-2">
 					<button type="submit" class="btn btn-primary w-50" title="Ejecutar">
@@ -71,6 +72,7 @@ export default {
 		//Obtencion informacion de form
 		setArticulo(value) {
 			this.articulo = value;
+
 		},
 		guardarPathTerceros(evento) {
 			this.archivoTerceros = evento.target.files[0];
