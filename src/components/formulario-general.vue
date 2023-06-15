@@ -1,6 +1,6 @@
 <template>
 	<form id="formulario" @submit.prevent="principal">
-		<div class="card m-2">
+		<div class="card m-2 ">
 			<div class="card-header">
 				<div class="d-flex align-items-center justify-content-between">
 					<label style="margin: 0px 15px;" for="año">Creacion de medios {{ msg }}</label>
@@ -52,7 +52,7 @@
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
 					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
-						@click="generarArchivo(this.b46, 'desdePC')">
+						@click="generarArchivo(this.art4, 'desdePC')">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -91,24 +91,36 @@ export default {
 		},
 		//Manejo de informacion
 		limpiar() {
-			this.terceros = new Array();
+			this.terceros = new Map();
 			this.personas = new Array();
+
 			this.balance = new Array();
 			this.cuentas = new Array();
+			this.b46 = new Map();
+
+			this.art4 = new Array();
+
 		},
 		crearTerceros() {
 			return new Promise(resolve => {
+				var tempTerceros = new Array();
 				this.personas.forEach(p => {
 					//console.log(p);
 					var persona = new Array()
 					p.split(';').forEach(
 						atributo => { persona.push(atributo) }
 					);
-					this.terceros.push(persona)
+					tempTerceros.push(persona)
 				});
-				this.terceros.forEach(
-					persona => { persona[0]=persona[0].replaceAll(' ','')
-					
+				tempTerceros.forEach(
+					persona => {
+						persona[0] = persona[0].replaceAll(' ', '')
+
+					});
+				tempTerceros.forEach(element => {
+					var id = element.shift()
+					var datos = element
+					this.terceros.set(id, datos)
 				});
 				resolve('resolved')
 			})
@@ -125,18 +137,23 @@ export default {
 				//Limpiar balance
 				this.balance.pop();		//Ultimo elemento
 				this.balance.shift();	//Primer elemento
+				//Crear balance b46
 				var head = '';
-				var btemp=new Map();
+				var btemp = new Map();
 				for (let index = 0; index < this.balance.length; index++) {
 					const element = this.balance[index];
-					if(element[0]==''){
+					if (element[0] == '') {
 						//Valida si ya existe la llave
-						if(!btemp.has(head)){
-							btemp.set(head,new Array()) //Crea una array vacia en donde se ingresaran las lineas relevantes
+						if (!btemp.has(head)) {
+							btemp.set(head, new Array()) //Crea una array vacia en donde se ingresaran las lineas relevantes
 							//console.log('Cabecera: '+head+' creada');
 						}
+						var id = element[3].split('-');
+						id[0] = id[0].replaceAll(',', '')
+						//console.log(head,id[0]);
+						element[3] = id[0]
 						btemp.get(head).push(element)
-					}else{
+					} else {
 						var fila = element[0].split(' ');
 						head = fila[0];
 						//console.log(head+' <-Esta es la cabecera actual')
@@ -212,25 +229,42 @@ export default {
 				lector.onerror = reject
 			});
 		},
-		principal() {
-			this.limpiar()
-			this.cargarArchivoTerceros().then(() => {
-				this.crearTerceros();
-			})
-			this.cargarArchivoBalance().then(() => {
-				this.crearBalance();
-			})
-			//Decide cual articulo realizar
-			if (this.articulo == 2) {
-				console.log('Se ejecutara el articulo 2');
-			} else if (this.articulo == 3) {
-				console.log('Se ejecutara el articulo 3');
-			} else if (this.articulo == 4) {
-				console.log('Se ejecutara el articulo 4');
-			}
-		},
 		//Creacion de articulos
-		
+		cargarArchivos() {
+			return new Promise((resolve) => {
+				this.limpiar()
+				this.cargarArchivoTerceros().then(() => {
+					this.crearTerceros();
+				})
+				this.cargarArchivoBalance().then(() => {
+					this.crearBalance();
+					this.articulo4();
+				})
+				resolve('resolved')
+			})
+		},
+		//MAin
+		principal() {
+			//Decide cual articulo realizar
+			this.cargarArchivos().then(() => {
+				if (this.articulo == 2) {
+					console.log('Se ejecutara el articulo 2');
+				} else if (this.articulo == 3) {
+					console.log('Se ejecutara el articulo 3');
+				} else if (this.articulo == 4) {
+					console.log('Se ejecutara el articulo 4');
+				}
+			})
+		},
+		articulo4() {
+			return new Promise((resolve) => {
+				console.log(this.b46);
+				var lineas = this.b46.get('23680102');
+				this.art4 = lineas;
+				console.log(lineas);
+				resolve('resolved')
+			})
+		},
 	},
 	data() {
 		return {
@@ -240,12 +274,12 @@ export default {
 			cuentas: new Array(),
 
 			//Finales
-			terceros: new Array(),
+			terceros: new Map(),
 			balance: new Array(),
 			art4: new Array(),
 
 			//Balance para art 4 y 6
-			b46: new Array(),
+			b46: new Map(),
 
 			//Files
 			archivoTerceros: null,
