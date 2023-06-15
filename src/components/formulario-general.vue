@@ -23,7 +23,7 @@
 				<div class="w-100 m-1" style="text-align: center;">Articulos</div>
 				<div class="btn-group m-1 nav" role="group" aria-label="articulos">
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
-						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
+						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)" disabled>
 					<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
 						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(3)" disabled>
@@ -52,7 +52,7 @@
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
 					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
-						@click="generarArchivo(this.terceros, 'desdePC')">
+						@click="generarArchivo(this.b46, 'desdePC')">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -122,6 +122,27 @@ export default {
 					);
 					this.balance.push(cuenta)
 				});
+				//Limpiar balance
+				this.balance.pop();		//Ultimo elemento
+				this.balance.shift();	//Primer elemento
+				var head = '';
+				var btemp=new Map();
+				for (let index = 0; index < this.balance.length; index++) {
+					const element = this.balance[index];
+					if(element[0]==''){
+						//Valida si ya existe la llave
+						if(!btemp.has(head)){
+							btemp.set(head,new Array()) //Crea una array vacia en donde se ingresaran las lineas relevantes
+							//console.log('Cabecera: '+head+' creada');
+						}
+						btemp.get(head).push(element)
+					}else{
+						var fila = element[0].split(' ');
+						head = fila[0];
+						//console.log(head+' <-Esta es la cabecera actual')
+					}
+				}
+				this.b46 = btemp;
 				resolve('resolved')
 			})
 		},
@@ -208,6 +229,8 @@ export default {
 				console.log('Se ejecutara el articulo 4');
 			}
 		},
+		//Creacion de articulos
+		
 	},
 	data() {
 		return {
@@ -215,10 +238,16 @@ export default {
 			//Temporales
 			personas: new Array(),
 			cuentas: new Array(),
+
 			//Finales
 			terceros: new Array(),
 			balance: new Array(),
+			art4: new Array(),
 
+			//Balance para art 4 y 6
+			b46: new Array(),
+
+			//Files
 			archivoTerceros: null,
 			archivoBalance: null,
 			error: false,
