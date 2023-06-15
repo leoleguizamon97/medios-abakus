@@ -106,6 +106,10 @@ export default {
 					);
 					this.terceros.push(persona)
 				});
+				this.terceros.forEach(
+					persona => { persona[0]=persona[0].replaceAll(' ','')
+					
+				});
 				resolve('resolved')
 			})
 		},
@@ -165,14 +169,14 @@ export default {
 					console.log(lineas.length + '<- Cantidad de lineas Balance');
 					lineas.forEach(linea => {
 						if (inicial == 0) {
-							nombreEmpresa = linea.replaceAll(';','')
-							console.log('Nombre de empresa: '+nombreEmpresa);
+							nombreEmpresa = linea.replaceAll(';', '')
+							console.log('Nombre de empresa: ' + nombreEmpresa);
 							inicial += 1;
-						} else if (linea.replaceAll(';','') == nombreEmpresa) {
-							console.log('Se omitio esta linea:- '+inicial+linea);
+						} else if (linea.replaceAll(';', '') == nombreEmpresa) {
+							console.log('Se omitio esta linea:- ' + inicial + linea);
 							inicial = 1
 						} else if (inicial != -1) {
-							console.log('Se omitio esta linea: '+inicial+linea);
+							console.log('Se omitio esta linea: ' + inicial + linea);
 							inicial += 1;
 							if (inicial == 4) {
 								inicial = -1;
