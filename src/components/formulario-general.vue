@@ -40,10 +40,10 @@
 						<bases2 msg="otros" />
 					</div>
 					<div class="tab-pane fade" id="base4" aria-labelledby="btnradio2" tabindex="2">
-						<bases msg="236801" />
+						<bases4 msg="236801" />
 					</div>
 					<div class="tab-pane fade" id="base6" aria-labelledby="btnradio3" tabindex="3">
-						<bases msg="135518" />
+						<bases6 msg="135518" />
 					</div>
 				</div>
 				<div class="d-flex my-2">
@@ -69,7 +69,8 @@
 
 <script>
 import tabla from './resultados-general.vue'
-import bases from './formularioBases.vue'
+import bases4 from './formularioBase4.vue'
+import bases6 from './formularioBase6.vue'
 import bases2 from './formularioBases2.vue'
 
 export default {
@@ -326,31 +327,31 @@ export default {
 					var base = mov[16]
 					switch (base) {
 						case "01":
-							base = document.getElementById('base01').value
+							base = document.getElementById('base401').value
 							break;
 						case "02":
-							base = document.getElementById('base02').value
+							base = document.getElementById('base402').value
 							break;
 						case "03":
-							base = document.getElementById('base03').value
+							base = document.getElementById('base403').value
 							break;
 						case "04":
-							base = document.getElementById('base04').value
+							base = document.getElementById('base404').value
 							break;
 						case "05":
-							base = document.getElementById('base05').value
+							base = document.getElementById('base405').value
 							break;
 						case "06":
-							base = document.getElementById('base06').value
+							base = document.getElementById('base406').value
 							break;
 						case "07":
-							base = document.getElementById('base07').value
+							base = document.getElementById('base407').value
 							break;
 						case "08":
-							base = document.getElementById('base08').value
+							base = document.getElementById('base408').value
 							break;
 						case "09":
-							base = document.getElementById('base09').value
+							base = document.getElementById('base409').value
 							break;
 						default:
 							base = "DESCONOCIDO"
@@ -439,31 +440,31 @@ export default {
 					var base = mov[16]
 					switch (base) {
 						case "01":
-							base = document.getElementById('base01').value
+							base = document.getElementById('base601').value
 							break;
 						case "02":
-							base = document.getElementById('base02').value
+							base = document.getElementById('base602').value
 							break;
 						case "03":
-							base = document.getElementById('base03').value
+							base = document.getElementById('base603').value
 							break;
 						case "04":
-							base = document.getElementById('base04').value
+							base = document.getElementById('base604').value
 							break;
 						case "05":
-							base = document.getElementById('base05').value
+							base = document.getElementById('base605').value
 							break;
 						case "06":
-							base = document.getElementById('base06').value
+							base = document.getElementById('base606').value
 							break;
 						case "07":
-							base = document.getElementById('base07').value
+							base = document.getElementById('base607').value
 							break;
 						case "08":
-							base = document.getElementById('base08').value
+							base = document.getElementById('base608').value
 							break;
 						case "09":
-							base = document.getElementById('base09').value
+							base = document.getElementById('base609').value
 							break;
 						default:
 							base = "DESCONOCIDO"
@@ -537,8 +538,9 @@ export default {
 	},
 	components: {
 		tabla,
-		bases,
+		bases4,
 		bases2,
+		bases6
 	}
 };
 </script>
