@@ -40,7 +40,7 @@
 						<bases2 msg="otros" />
 					</div>
 					<div class="tab-pane fade" id="base4" aria-labelledby="btnradio2" tabindex="2">
-						<bases msg="2368" />
+						<bases msg="236801" />
 					</div>
 					<div class="tab-pane fade" id="base6" aria-labelledby="btnradio3" tabindex="3">
 						<bases msg="135518" />
@@ -52,7 +52,7 @@
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
 					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
-						@click="generarArchivo(this.art4, 'desdePC')">
+						@click="vigente()">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -99,6 +99,7 @@ export default {
 			this.b46 = new Map();
 
 			this.art4 = new Array();
+			this.art6 = new Array();
 
 		},
 		crearTerceros() {
@@ -137,6 +138,12 @@ export default {
 				//Limpiar balance
 				this.balance.pop();		//Ultimo elemento
 				this.balance.shift();	//Primer elemento
+				this.balance.forEach(linea => {
+					linea[5] = linea[5].replaceAll(',', '.');
+					linea[8] = linea[8].replaceAll(',', '.');
+					linea[10] = linea[10].replaceAll(',', '.');
+					linea[14] = linea[14].replaceAll(',', '.');
+				});
 				//Crear balance b46
 				var head = '';
 				var btemp = new Map();
@@ -166,7 +173,7 @@ export default {
 		generarArchivo(contenido, filen) {
 			return new Promise(resolve => {
 				const enlace = document.createElement("a");
-				const nombre = filen + '.txt'
+				const nombre = filen + '.csv'
 				enlace.setAttribute(
 					"href",
 					"data:text/plain;charset=utf-8," + encodeURIComponent(contenido)
@@ -178,6 +185,18 @@ export default {
 				document.body.removeChild(enlace);
 				resolve('resolved')
 			})
+		},
+		vigente() {
+			if (this.articulo == 4) {
+				this.generarArchivo(this.art4,'Articulo4')
+				return 0;
+			} else if (this.articulo == 6) {
+				this.generarArchivo(this.art6,'Articulo6')
+				return 0;
+			} else if (this.articulo == 2) {
+				this.generarArchivo(this.art2,'Articulo2')
+				return 0;
+			}
 		},
 		//Cargar documentos
 		cargarArchivoTerceros() {
@@ -232,31 +251,250 @@ export default {
 		//Creacion de articulo
 		buscarCuenta(cuenta, mapa) {
 			const cuentas = [];
-			console.log(mapa);
 			//Busca en estas llaves
-			for (var [key,value] of mapa) {
+			for (var [key, value] of mapa) {
 				if (key.startsWith(cuenta)) {
 					cuentas.push(key);
-					//console.log(key + 'Test');
+					console.log(key + 'Test');
 					console.log(value);
 				}
 			}
-			console.log(cuenta);
 			return cuentas;
+		},
+		buscarPersona(id) {
+			var persona = this.terceros.get(id)
+			return persona
 		},
 		articulo4() {
 			return new Promise((resolve) => {
-				var cuenta = this.buscarCuenta('2368', this.b46);
-				console.log(cuenta);
-				var lineas = this.b46.get('23680102');
-				this.art4 = lineas;
-				console.log(lineas);
+				var cuenta = this.buscarCuenta('236801', this.b46);
+				//obtener lineas de articulo
+				var lineas = new Array();
+				cuenta.forEach(res => {
+					var valores = this.b46.get(res);
+					valores.forEach(linea => {
+						linea.push(res.substring(res.length - 2))
+						console.log(linea);
+						lineas.push(linea);
+					});
+
+				});
+				//crear articulo
+				//cabecera
+				var cabecera = Array()
+				cabecera.push('Año')
+				cabecera.push('Documento')
+				cabecera.push('Id')
+				cabecera.push('Nombre')
+				cabecera.push('Direccion')
+				cabecera.push('Telefono')
+				cabecera.push('Correo')
+				cabecera.push('Codigo departamento')
+				cabecera.push('Base')
+				cabecera.push('Tarifa')
+				cabecera.push('Valor')
+				cabecera.push('\n')
+				console.log(cabecera);
+				this.art4.push(cabecera);
+				lineas.forEach(mov => {
+					var final = Array();
+					//Buscamos el tercero
+					var tercero = this.buscarPersona(mov[3])
+					//Definimos tipo de documento
+					var tipo = tercero[1]
+					switch (tipo) {
+						case "A":
+							tipo = "NIT";
+							break;
+						case "C":
+							tipo = "CC";
+							break;
+						case "E":
+							tipo = "CE";
+							break;
+						case "P":
+							tipo = "PA";
+							break;
+						case "T":
+							tipo = "TI";
+							break;
+						default:
+							tipo = "DESCONOCIDO";
+							break;
+					}
+					//definimos la base
+					var base = mov[16]
+					switch (base) {
+						case "01":
+							base = document.getElementById('base01').value
+							break;
+						case "02":
+							base = document.getElementById('base02').value
+							break;
+						case "03":
+							base = document.getElementById('base03').value
+							break;
+						case "04":
+							base = document.getElementById('base04').value
+							break;
+						case "05":
+							base = document.getElementById('base05').value
+							break;
+						case "06":
+							base = document.getElementById('base06').value
+							break;
+						case "07":
+							base = document.getElementById('base07').value
+							break;
+						case "08":
+							base = document.getElementById('base08').value
+							break;
+						case "09":
+							base = document.getElementById('base09').value
+							break;
+						default:
+							base = "DESCONOCIDO"
+							break;
+					}
+					//definimos la tarifa
+					var tarifa = '***'
+					//Se crea linea de informe
+					final.push(document.getElementById('año').value)
+					final.push(tipo)
+					final.push(mov[3])
+					final.push(tercero[2])
+					final.push(tercero[3])
+					final.push(tercero[4])
+					final.push(tercero[9])
+					final.push(tercero[6])
+					final.push(base)
+					final.push(tarifa)
+					final.push(parseFloat(mov[10]) - parseFloat(mov[8]))
+					final.push('\n')
+					console.log(final);
+					this.art4.push(final);
+				});
+				//console.log(lineas);
+				resolve('resolved')
+			})
+		},
+		articulo6() {
+			return new Promise((resolve) => {
+				var cuenta = this.buscarCuenta('135518', this.b46);
+				//obtener lineas de articulo
+				var lineas = new Array();
+				cuenta.forEach(res => {
+					var valores = this.b46.get(res);
+					valores.forEach(linea => {
+						linea.push(res.substring(res.length - 2))
+						console.log(linea);
+						lineas.push(linea);
+					});
+
+				});
+				//crear articulo
+				//cabecera
+				var cabecera = Array()
+				cabecera.push('Año')
+				cabecera.push('Documento')
+				cabecera.push('Id')
+				cabecera.push('Nombre')
+				cabecera.push('Direccion')
+				cabecera.push('Telefono')
+				cabecera.push('Correo')
+				cabecera.push('Codigo departamento')
+				cabecera.push('Base')
+				cabecera.push('Tarifa')
+				cabecera.push('Valor')
+				cabecera.push('\n')
+				console.log(cabecera);
+				this.art6.push(cabecera);
+				lineas.forEach(mov => {
+					var final = Array();
+					//Buscamos el tercero
+					var tercero = this.buscarPersona(mov[3])
+					//Definimos tipo de documento
+					var tipo = tercero[1]
+					switch (tipo) {
+						case "A":
+							tipo = "NIT";
+							break;
+						case "C":
+							tipo = "CC";
+							break;
+						case "E":
+							tipo = "CE";
+							break;
+						case "P":
+							tipo = "PA";
+							break;
+						case "T":
+							tipo = "TI";
+							break;
+						default:
+							tipo = "DESCONOCIDO";
+							break;
+					}
+					//definimos la base
+					var base = mov[16]
+					switch (base) {
+						case "01":
+							base = document.getElementById('base01').value
+							break;
+						case "02":
+							base = document.getElementById('base02').value
+							break;
+						case "03":
+							base = document.getElementById('base03').value
+							break;
+						case "04":
+							base = document.getElementById('base04').value
+							break;
+						case "05":
+							base = document.getElementById('base05').value
+							break;
+						case "06":
+							base = document.getElementById('base06').value
+							break;
+						case "07":
+							base = document.getElementById('base07').value
+							break;
+						case "08":
+							base = document.getElementById('base08').value
+							break;
+						case "09":
+							base = document.getElementById('base09').value
+							break;
+						default:
+							base = "DESCONOCIDO"
+							break;
+					}
+					//definimos la tarifa
+					var tarifa = '***'
+					//Se crea linea de informe
+					final.push(document.getElementById('año').value)
+					final.push(tipo)
+					final.push(mov[3])
+					final.push(tercero[2])
+					final.push(tercero[3])
+					final.push(tercero[4])
+					final.push(tercero[9])
+					final.push(tercero[6])
+					final.push(base)
+					final.push(tarifa)
+					final.push(parseFloat(mov[10]) - parseFloat(mov[8]))
+					final.push('\n')
+					console.log(final);
+					this.art6.push(final);
+				});
+				//console.log(lineas);
 				resolve('resolved')
 			})
 		},
 		//MAin
 		principal() {
 			//Decide cual articulo realizar
+			this.limpiar()
 			this.cargarArchivoTerceros()
 				.then(() => this.crearTerceros())
 				.then(() => this.cargarArchivoBalance())
@@ -286,6 +524,7 @@ export default {
 			terceros: new Map(),
 			balance: new Array(),
 			art4: new Array(),
+			art6: new Array(),
 
 			//Balance para art 4 y 6
 			b46: new Map(),
