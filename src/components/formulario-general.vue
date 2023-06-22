@@ -190,7 +190,7 @@ export default {
 					lineas.forEach(linea => {
 						this.personas.push(linea)
 					})
-					console.log('resultado' + this.personas);
+					//console.log('resultado' + this.personas);
 					resolve('Cargado')
 				}
 				lector.onerror = reject
@@ -208,13 +208,13 @@ export default {
 					lineas.forEach(linea => {
 						if (inicial == 0) {
 							nombreEmpresa = linea.replaceAll(';', '')
-							console.log('Nombre de empresa: ' + nombreEmpresa);
+							//console.log('Nombre de empresa: ' + nombreEmpresa);
 							inicial += 1;
 						} else if (linea.replaceAll(';', '') == nombreEmpresa) {
-							console.log('Se omitio esta linea:- ' + inicial + linea);
+							//console.log('Se omitio esta linea:- ' + inicial + linea);
 							inicial = 1
 						} else if (inicial != -1) {
-							console.log('Se omitio esta linea: ' + inicial + linea);
+							//console.log('Se omitio esta linea: ' + inicial + linea);
 							inicial += 1;
 							if (inicial == 4) {
 								inicial = -1;
@@ -223,16 +223,31 @@ export default {
 							this.cuentas.push(linea)
 						}
 					})
-					console.log('resultado' + this.cuentas);
+					//console.log('resultado' + this.cuentas);
 					resolve('Cargado')
 				}
 				lector.onerror = reject
 			});
 		},
 		//Creacion de articulo
+		buscarCuenta(cuenta, mapa) {
+			const cuentas = [];
+			console.log(mapa);
+			//Busca en estas llaves
+			for (var [key,value] of mapa) {
+				if (key.startsWith(cuenta)) {
+					cuentas.push(key);
+					//console.log(key + 'Test');
+					console.log(value);
+				}
+			}
+			console.log(cuenta);
+			return cuentas;
+		},
 		articulo4() {
 			return new Promise((resolve) => {
-				console.log(this.b46);
+				var cuenta = this.buscarCuenta('2368', this.b46);
+				console.log(cuenta);
 				var lineas = this.b46.get('23680102');
 				this.art4 = lineas;
 				console.log(lineas);
