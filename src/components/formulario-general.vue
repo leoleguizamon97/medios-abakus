@@ -247,10 +247,12 @@ export default {
 				.then(() => this.cargarArchivoBalance())
 				.then(() => this.crearBalance())
 				.then(() => {
-					if (this.articulo == 2) {
-						console.log('Se ejecutara el articulo 2');
+					if (this.articulo == 6) {
+						console.log('Se ejecutara el articulo 6');
+						this.articulo6()
 					} else if (this.articulo == 3) {
 						console.log('Se ejecutara el articulo 3');
+						this.articulo3()
 					} else if (this.articulo == 4) {
 						console.log('Se ejecutara el articulo 4');
 						this.articulo4()
