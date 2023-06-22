@@ -335,81 +335,84 @@ export default {
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
-					var tercero = this.buscarPersona(mov[3])
-					//Definimos tipo de documento
-					var tipo = this.tipoDocumento(tercero[1])
-					//definimos la base
-					var tarifa = mov[mov.length-1]
-					switch (tarifa) {
-						case "01":
-							tarifa = document.getElementById('base601').value
-							break;
-						case "02":
-							tarifa = document.getElementById('base602').value
-							break;
-						case "03":
-							tarifa = document.getElementById('base603').value
-							break;
-						case "04":
-							tarifa = document.getElementById('base604').value
-							break;
-						case "05":
-							tarifa = document.getElementById('base605').value
-							break;
-						case "06":
-							tarifa = document.getElementById('base606').value
-							break;
-						case "07":
-							tarifa = document.getElementById('base607').value
-							break;
-						case "08":
-							tarifa = document.getElementById('base608').value
-							break;
-						case "09":
-							tarifa = document.getElementById('base609').value
-							break;
-						default:
-							tarifa = "DESCONOCIDO"
-							break;
+					if (parseFloat(mov[8]) - parseFloat(mov[10]) != 0) {
+
+						var tercero = this.buscarPersona(mov[3])
+						//Definimos tipo de documento
+						var tipo = this.tipoDocumento(tercero[1])
+						//definimos la base
+						var tarifa = mov[mov.length - 1]
+						switch (tarifa) {
+							case "01":
+								tarifa = document.getElementById('base401').value
+								break;
+							case "02":
+								tarifa = document.getElementById('base402').value
+								break;
+							case "03":
+								tarifa = document.getElementById('base403').value
+								break;
+							case "04":
+								tarifa = document.getElementById('base404').value
+								break;
+							case "05":
+								tarifa = document.getElementById('base405').value
+								break;
+							case "06":
+								tarifa = document.getElementById('base406').value
+								break;
+							case "07":
+								tarifa = document.getElementById('base407').value
+								break;
+							case "08":
+								tarifa = document.getElementById('base408').value
+								break;
+							case "09":
+								tarifa = document.getElementById('base409').value
+								break;
+							default:
+								tarifa = "DESCONOCIDO"
+								break;
+						}
+						//direccion
+						var direccion = '';
+						if (tercero[3] == '') {
+							direccion = this.empresaData[2];
+						} else {
+							direccion = tercero[3];
+						}
+						//Telefono
+						var telefono = '';
+						if (tercero[4] == '') {
+							telefono = '0';
+						} else {
+							telefono = tercero[4];
+						}
+						//correo
+						var correo = '';
+						if (tercero[9] == '') {
+							correo = 'NA';
+						} else {
+							correo = tercero[4];
+						}
+						//definimos la tarifa
+						var base = (parseFloat(mov[10]) - parseFloat(mov[8])) / parseFloat(tarifa) * 1000
+						//Se crea linea de informe
+						final.push(document.getElementById('año').value)
+						final.push(tipo)
+						final.push(mov[3])
+						final.push(tercero[2])
+						final.push(direccion)
+						final.push(telefono)
+						final.push(correo)
+						final.push(tercero[6])
+						final.push(parseInt(base))
+						final.push(tarifa)
+						final.push(parseInt(parseFloat(mov[10]) - parseFloat(mov[8])))
+						final.push('\n')
+						console.log(final);
+						this.art4.push(final);
 					}
-					//direccion
-					var direccion = '';
-					if (tercero[3] == '') {
-						direccion = this.empresaData[2];
-					} else {
-						direccion = tercero[3];
-					}
-					//Telefono
-					var telefono = '';
-					if (tercero[4] == '') {
-						telefono = '0';
-					} else {
-						telefono = tercero[4];
-					}
-					//correo
-					var correo = '';
-					if (tercero[9] == '') {
-						correo = 'NA';
-					} else {
-						correo = tercero[4];
-					}
-					//definimos la tarifa
-					var base = '***'
-					//Se crea linea de informe
-					final.push(document.getElementById('año').value)
-					final.push(tipo)
-					final.push(mov[3])
-					final.push(tercero[2])
-					final.push(direccion)
-					final.push(telefono)
-					final.push(correo)
-					final.push(tercero[6])
-					final.push(base)
-					final.push(tarifa)
-					final.push(parseFloat(mov[10]) - parseFloat(mov[8]))
-					final.push('\n')
-					console.log(final);
-					this.art4.push(final);
 				});
 				//console.log(lineas);
 				resolve('resolved')
@@ -435,81 +438,83 @@ export default {
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
-					var tercero = this.buscarPersona(mov[3])
-					//Definimos tipo de documento
-					var tipo = this.tipoDocumento(tercero[1])
-					//definimos la base
-					var tarifa = mov[mov.length-1]
-					switch (tarifa) {
-						case "01":
-							tarifa = document.getElementById('base601').value
-							break;
-						case "02":
-							tarifa = document.getElementById('base602').value
-							break;
-						case "03":
-							tarifa = document.getElementById('base603').value
-							break;
-						case "04":
-							tarifa = document.getElementById('base604').value
-							break;
-						case "05":
-							tarifa = document.getElementById('base605').value
-							break;
-						case "06":
-							tarifa = document.getElementById('base606').value
-							break;
-						case "07":
-							tarifa = document.getElementById('base607').value
-							break;
-						case "08":
-							tarifa = document.getElementById('base608').value
-							break;
-						case "09":
-							tarifa = document.getElementById('base609').value
-							break;
-						default:
-							tarifa = "DESCONOCIDO"
-							break;
+					if (parseFloat(mov[8]) - parseFloat(mov[10]) != 0) {
+						var tercero = this.buscarPersona(mov[3])
+						//Definimos tipo de documento
+						var tipo = this.tipoDocumento(tercero[1])
+						//definimos la base
+						var tarifa = mov[mov.length - 1]
+						switch (tarifa) {
+							case "01":
+								tarifa = document.getElementById('base601').value
+								break;
+							case "02":
+								tarifa = document.getElementById('base602').value
+								break;
+							case "03":
+								tarifa = document.getElementById('base603').value
+								break;
+							case "04":
+								tarifa = document.getElementById('base604').value
+								break;
+							case "05":
+								tarifa = document.getElementById('base605').value
+								break;
+							case "06":
+								tarifa = document.getElementById('base606').value
+								break;
+							case "07":
+								tarifa = document.getElementById('base607').value
+								break;
+							case "08":
+								tarifa = document.getElementById('base608').value
+								break;
+							case "09":
+								tarifa = document.getElementById('base609').value
+								break;
+							default:
+								tarifa = "DESCONOCIDO"
+								break;
+						}
+						//direccion
+						var direccion = '';
+						if (tercero[3] == '') {
+							direccion = this.empresaData[2];
+						} else {
+							direccion = tercero[3];
+						}
+						//Telefono
+						var telefono = '';
+						if (tercero[4] == '') {
+							telefono = '0';
+						} else {
+							telefono = tercero[4];
+						}
+						//correo
+						var correo = '';
+						if (tercero[9] == '') {
+							correo = 'NA';
+						} else {
+							correo = tercero[4];
+						}
+						//definimos la tarifa
+						var base = (parseFloat(mov[8]) - parseFloat(mov[10])) / parseFloat(tarifa) * 1000
+						//Se crea linea de informe
+						final.push(document.getElementById('año').value)
+						final.push(tipo)
+						final.push(mov[3])
+						final.push(tercero[2])
+						final.push(direccion)
+						final.push(telefono)
+						final.push(correo)
+						final.push(tercero[6])
+						final.push(parseInt(base))
+						final.push(tarifa)
+						final.push(parseInt(parseFloat(mov[8]) - parseFloat(mov[10])))
+						final.push('\n')
+						console.log(final);
+						this.art6.push(final);
 					}
-					//direccion
-					var direccion = '';
-					if (tercero[3] == '') {
-						direccion = this.empresaData[2];
-					} else {
-						direccion = tercero[3];
-					}
-					//Telefono
-					var telefono = '';
-					if (tercero[4] == '') {
-						telefono = '0';
-					} else {
-						telefono = tercero[4];
-					}
-					//correo
-					var correo = '';
-					if (tercero[9] == '') {
-						correo = 'NA';
-					} else {
-						correo = tercero[4];
-					}
-					//definimos la tarifa
-					var base = parseFloat(mov[8]) - parseFloat(mov[10]) / tarifa
-					//Se crea linea de informe
-					final.push(document.getElementById('año').value)
-					final.push(tipo)
-					final.push(mov[3])
-					final.push(tercero[2])
-					final.push(direccion)
-					final.push(telefono)
-					final.push(correo)
-					final.push(tercero[6])
-					final.push(base)
-					final.push(tarifa)
-					final.push(parseFloat(mov[8]) - parseFloat(mov[10]))
-					final.push('\n')
-					console.log(final);
-					this.art6.push(final);
 				});
 				//console.log(lineas);
 				resolve('resolved')
