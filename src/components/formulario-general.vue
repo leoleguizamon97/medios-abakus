@@ -229,33 +229,7 @@ export default {
 				lector.onerror = reject
 			});
 		},
-		//Creacion de articulos
-		cargarArchivos() {
-			return new Promise((resolve) => {
-				this.limpiar()
-				this.cargarArchivoTerceros().then(() => {
-					this.crearTerceros();
-				})
-				this.cargarArchivoBalance().then(() => {
-					this.crearBalance();
-					this.articulo4();
-				})
-				resolve('resolved')
-			})
-		},
-		//MAin
-		principal() {
-			//Decide cual articulo realizar
-			this.cargarArchivos().then(() => {
-				if (this.articulo == 2) {
-					console.log('Se ejecutara el articulo 2');
-				} else if (this.articulo == 3) {
-					console.log('Se ejecutara el articulo 3');
-				} else if (this.articulo == 4) {
-					console.log('Se ejecutara el articulo 4');
-				}
-			})
-		},
+		//Creacion de articulo
 		articulo4() {
 			return new Promise((resolve) => {
 				console.log(this.b46);
@@ -264,6 +238,24 @@ export default {
 				console.log(lineas);
 				resolve('resolved')
 			})
+		},
+		//MAin
+		principal() {
+			//Decide cual articulo realizar
+			this.cargarArchivoTerceros()
+				.then(() => this.crearTerceros())
+				.then(() => this.cargarArchivoBalance())
+				.then(() => this.crearBalance())
+				.then(() => {
+					if (this.articulo == 2) {
+						console.log('Se ejecutara el articulo 2');
+					} else if (this.articulo == 3) {
+						console.log('Se ejecutara el articulo 3');
+					} else if (this.articulo == 4) {
+						console.log('Se ejecutara el articulo 4');
+						this.articulo4()
+					}
+				})
 		},
 	},
 	data() {
