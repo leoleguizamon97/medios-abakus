@@ -51,8 +51,7 @@
 						Ejecutar
 						<i class="bi bi-check2-circle m-1"></i>
 					</button>
-					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar"
-						@click="vigente()">
+					<button type="button" class="btn btn-warning w-25 mx-2" title="descargar" @click="vigente()">
 						<i class="bi bi-download m-1"></i>
 					</button>
 					<button type="reset" class="btn btn-danger w-25" title="Limpiar" @click="this.error = false">
@@ -101,6 +100,8 @@ export default {
 
 			this.art4 = new Array();
 			this.art6 = new Array();
+
+			this.empresaData = new Array();
 
 		},
 		crearTerceros() {
@@ -174,10 +175,10 @@ export default {
 		generarArchivo(contenido, filen) {
 			return new Promise(resolve => {
 				const enlace = document.createElement("a");
-				const nombre = filen + '.csv'
+				const nombre = filen + '.txt'
 				enlace.setAttribute(
 					"href",
-					"data:text/plain;charset=utf-8," + encodeURIComponent(contenido)
+					"data:text/plain;charset=utf-18," + encodeURIComponent(contenido)
 				);
 				enlace.setAttribute("download", nombre);
 				enlace.style.display = "none";
@@ -189,13 +190,13 @@ export default {
 		},
 		vigente() {
 			if (this.articulo == 4) {
-				this.generarArchivo(this.art4,'Articulo4')
+				this.generarArchivo(this.art4, 'Articulo4')
 				return 0;
 			} else if (this.articulo == 6) {
-				this.generarArchivo(this.art6,'Articulo6')
+				this.generarArchivo(this.art6, 'Articulo6')
 				return 0;
 			} else if (this.articulo == 2) {
-				this.generarArchivo(this.art2,'Articulo2')
+				this.generarArchivo(this.art2, 'Articulo2')
 				return 0;
 			}
 		},
@@ -230,11 +231,15 @@ export default {
 							nombreEmpresa = linea.replaceAll(';', '')
 							//console.log('Nombre de empresa: ' + nombreEmpresa);
 							inicial += 1;
+						} else if (inicial == 1) {
+							console.log(linea.split('-')[0].replace(/\D/g, '') + 'Este es el id de la empresa');
+							this.idEmpresa = linea.split('-')[0].replace(/\D/g, '')
+							inicial += 1;
 						} else if (linea.replaceAll(';', '') == nombreEmpresa) {
 							//console.log('Se omitio esta linea:- ' + inicial + linea);
 							inicial = 1
 						} else if (inicial != -1) {
-							//console.log('Se omitio esta linea: ' + inicial + linea);
+							console.log('Se omitio esta linea: ' + inicial + linea);
 							inicial += 1;
 							if (inicial == 4) {
 								inicial = -1;
@@ -250,6 +255,11 @@ export default {
 			});
 		},
 		//Creacion de articulo
+		empresa(id) {
+			this.empresaData.push(id)
+			this.empresaData.push(this.buscarPersona(id)[2])
+			this.empresaData.push(this.buscarPersona(id)[3])
+		},
 		buscarCuenta(cuenta, mapa) {
 			const cuentas = [];
 			//Busca en estas llaves
@@ -265,6 +275,45 @@ export default {
 		buscarPersona(id) {
 			var persona = this.terceros.get(id)
 			return persona
+		},
+		crearCabecera() {
+			var cabecera = Array()
+			cabecera.push('Año')
+			cabecera.push('Documento')
+			cabecera.push('Id')
+			cabecera.push('Nombre')
+			cabecera.push('Direccion')
+			cabecera.push('Telefono')
+			cabecera.push('Correo')
+			cabecera.push('Codigo departamento')
+			cabecera.push('Base')
+			cabecera.push('Tarifa')
+			cabecera.push('Valor')
+			cabecera.push('\n')
+			return cabecera
+		},
+		tipoDocumento(tipo) {
+			switch (tipo) {
+				case "A":
+					tipo = "NIT";
+					break;
+				case "C":
+					tipo = "CC";
+					break;
+				case "E":
+					tipo = "CE";
+					break;
+				case "P":
+					tipo = "PA";
+					break;
+				case "T":
+					tipo = "TI";
+					break;
+				default:
+					tipo = "DESCONOCIDO";
+					break;
+			}
+			return tipo
 		},
 		articulo4() {
 			return new Promise((resolve) => {
@@ -282,91 +331,78 @@ export default {
 				});
 				//crear articulo
 				//cabecera
-				var cabecera = Array()
-				cabecera.push('Año')
-				cabecera.push('Documento')
-				cabecera.push('Id')
-				cabecera.push('Nombre')
-				cabecera.push('Direccion')
-				cabecera.push('Telefono')
-				cabecera.push('Correo')
-				cabecera.push('Codigo departamento')
-				cabecera.push('Base')
-				cabecera.push('Tarifa')
-				cabecera.push('Valor')
-				cabecera.push('\n')
-				console.log(cabecera);
-				this.art4.push(cabecera);
+				this.art4.push(this.crearCabecera());
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
 					var tercero = this.buscarPersona(mov[3])
 					//Definimos tipo de documento
-					var tipo = tercero[1]
-					switch (tipo) {
-						case "A":
-							tipo = "NIT";
-							break;
-						case "C":
-							tipo = "CC";
-							break;
-						case "E":
-							tipo = "CE";
-							break;
-						case "P":
-							tipo = "PA";
-							break;
-						case "T":
-							tipo = "TI";
-							break;
-						default:
-							tipo = "DESCONOCIDO";
-							break;
-					}
+					var tipo = this.tipoDocumento(tercero[1])
 					//definimos la base
-					var base = mov[16]
-					switch (base) {
+					var tarifa = mov[mov.length-1]
+					switch (tarifa) {
 						case "01":
-							base = document.getElementById('base401').value
+							tarifa = document.getElementById('base601').value
 							break;
 						case "02":
-							base = document.getElementById('base402').value
+							tarifa = document.getElementById('base602').value
 							break;
 						case "03":
-							base = document.getElementById('base403').value
+							tarifa = document.getElementById('base603').value
 							break;
 						case "04":
-							base = document.getElementById('base404').value
+							tarifa = document.getElementById('base604').value
 							break;
 						case "05":
-							base = document.getElementById('base405').value
+							tarifa = document.getElementById('base605').value
 							break;
 						case "06":
-							base = document.getElementById('base406').value
+							tarifa = document.getElementById('base606').value
 							break;
 						case "07":
-							base = document.getElementById('base407').value
+							tarifa = document.getElementById('base607').value
 							break;
 						case "08":
-							base = document.getElementById('base408').value
+							tarifa = document.getElementById('base608').value
 							break;
 						case "09":
-							base = document.getElementById('base409').value
+							tarifa = document.getElementById('base609').value
 							break;
 						default:
-							base = "DESCONOCIDO"
+							tarifa = "DESCONOCIDO"
 							break;
 					}
+					//direccion
+					var direccion = '';
+					if (tercero[3] == '') {
+						direccion = this.empresaData[2];
+					} else {
+						direccion = tercero[3];
+					}
+					//Telefono
+					var telefono = '';
+					if (tercero[4] == '') {
+						telefono = '0';
+					} else {
+						telefono = tercero[4];
+					}
+					//correo
+					var correo = '';
+					if (tercero[9] == '') {
+						correo = 'NA';
+					} else {
+						correo = tercero[4];
+					}
 					//definimos la tarifa
-					var tarifa = '***'
+					var base = '***'
 					//Se crea linea de informe
 					final.push(document.getElementById('año').value)
 					final.push(tipo)
 					final.push(mov[3])
 					final.push(tercero[2])
-					final.push(tercero[3])
-					final.push(tercero[4])
-					final.push(tercero[9])
+					final.push(direccion)
+					final.push(telefono)
+					final.push(correo)
 					final.push(tercero[6])
 					final.push(base)
 					final.push(tarifa)
@@ -395,95 +431,82 @@ export default {
 				});
 				//crear articulo
 				//cabecera
-				var cabecera = Array()
-				cabecera.push('Año')
-				cabecera.push('Documento')
-				cabecera.push('Id')
-				cabecera.push('Nombre')
-				cabecera.push('Direccion')
-				cabecera.push('Telefono')
-				cabecera.push('Correo')
-				cabecera.push('Codigo departamento')
-				cabecera.push('Base')
-				cabecera.push('Tarifa')
-				cabecera.push('Valor')
-				cabecera.push('\n')
-				console.log(cabecera);
-				this.art6.push(cabecera);
+				this.art6.push(this.crearCabecera());
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
 					var tercero = this.buscarPersona(mov[3])
 					//Definimos tipo de documento
-					var tipo = tercero[1]
-					switch (tipo) {
-						case "A":
-							tipo = "NIT";
-							break;
-						case "C":
-							tipo = "CC";
-							break;
-						case "E":
-							tipo = "CE";
-							break;
-						case "P":
-							tipo = "PA";
-							break;
-						case "T":
-							tipo = "TI";
-							break;
-						default:
-							tipo = "DESCONOCIDO";
-							break;
-					}
+					var tipo = this.tipoDocumento(tercero[1])
 					//definimos la base
-					var base = mov[16]
-					switch (base) {
+					var tarifa = mov[mov.length-1]
+					switch (tarifa) {
 						case "01":
-							base = document.getElementById('base601').value
+							tarifa = document.getElementById('base601').value
 							break;
 						case "02":
-							base = document.getElementById('base602').value
+							tarifa = document.getElementById('base602').value
 							break;
 						case "03":
-							base = document.getElementById('base603').value
+							tarifa = document.getElementById('base603').value
 							break;
 						case "04":
-							base = document.getElementById('base604').value
+							tarifa = document.getElementById('base604').value
 							break;
 						case "05":
-							base = document.getElementById('base605').value
+							tarifa = document.getElementById('base605').value
 							break;
 						case "06":
-							base = document.getElementById('base606').value
+							tarifa = document.getElementById('base606').value
 							break;
 						case "07":
-							base = document.getElementById('base607').value
+							tarifa = document.getElementById('base607').value
 							break;
 						case "08":
-							base = document.getElementById('base608').value
+							tarifa = document.getElementById('base608').value
 							break;
 						case "09":
-							base = document.getElementById('base609').value
+							tarifa = document.getElementById('base609').value
 							break;
 						default:
-							base = "DESCONOCIDO"
+							tarifa = "DESCONOCIDO"
 							break;
 					}
+					//direccion
+					var direccion = '';
+					if (tercero[3] == '') {
+						direccion = this.empresaData[2];
+					} else {
+						direccion = tercero[3];
+					}
+					//Telefono
+					var telefono = '';
+					if (tercero[4] == '') {
+						telefono = '0';
+					} else {
+						telefono = tercero[4];
+					}
+					//correo
+					var correo = '';
+					if (tercero[9] == '') {
+						correo = 'NA';
+					} else {
+						correo = tercero[4];
+					}
 					//definimos la tarifa
-					var tarifa = '***'
+					var base = parseFloat(mov[8]) - parseFloat(mov[10]) / tarifa
 					//Se crea linea de informe
 					final.push(document.getElementById('año').value)
 					final.push(tipo)
 					final.push(mov[3])
 					final.push(tercero[2])
-					final.push(tercero[3])
-					final.push(tercero[4])
-					final.push(tercero[9])
+					final.push(direccion)
+					final.push(telefono)
+					final.push(correo)
 					final.push(tercero[6])
 					final.push(base)
 					final.push(tarifa)
-					final.push(parseFloat(mov[10]) - parseFloat(mov[8]))
+					final.push(parseFloat(mov[8]) - parseFloat(mov[10]))
 					final.push('\n')
 					console.log(final);
 					this.art6.push(final);
@@ -501,6 +524,7 @@ export default {
 				.then(() => this.cargarArchivoBalance())
 				.then(() => this.crearBalance())
 				.then(() => {
+					this.empresa(this.idEmpresa)
 					if (this.articulo == 6) {
 						console.log('Se ejecutara el articulo 6');
 						this.articulo6()
@@ -516,11 +540,11 @@ export default {
 	},
 	data() {
 		return {
-			articulo: 2,
 			//Temporales
 			personas: new Array(),
 			cuentas: new Array(),
-
+			empresaData: new Array(),
+			idEmpresa: '0',
 			//Finales
 			terceros: new Map(),
 			balance: new Array(),
