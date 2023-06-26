@@ -23,7 +23,7 @@
 				<div class="w-100 m-1" style="text-align: center;">Articulos</div>
 				<div class="btn-group m-1 nav" role="group" aria-label="articulos">
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
-						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)" disabled>
+						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)" >
 					<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
 						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(3)" disabled>
@@ -314,6 +314,9 @@ export default {
 					break;
 			}
 			return tipo
+		},
+		articulo2() {
+
 		},
 		articulo4() {
 			return new Promise((resolve) => {

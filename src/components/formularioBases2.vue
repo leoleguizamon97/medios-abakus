@@ -1,10 +1,18 @@
 <template>
-	<label for="input-group" class="form-label">OTROS: {{ msg }}</label>
-	<div class="flex-column" id="Bases">
-		<div class="input-group mb-3">
-			<span class="input-group-text" id="cuenta01">Cuenta -0555</span>
-			<input type="number" class="form-control" placeholder="0.19" aria-label="base01" defaultValue="0.19" step="0.01" required>
-		</div>
+	<label for="input-group" class="form-label">Elementos excluidos Art 2</label>
+	<div class="input-group mb-3">
+		<input type="number" class="form-control" placeholder="Cuenta a eliminar" aria-label="cuentaEliminar"
+			aria-describedby="button-addon2">
+		<button class="btn btn-primary" type="button" id="button-addon2">
+			<i class="bi bi-plus-circle"></i>
+		</button>
+		<ul class="list-group list-group-flush ">
+			<li v-for="(item, index) in cuentasIgnorar" class="list-group-item">
+				<button v-on:click="elim(index)" class="btn btn-danger pull-right" type="button"
+					id="button-addon2">DELETE</button>
+				{{ item.titol }}
+			</li>
+		</ul>
 
 	</div>
 </template>
@@ -20,6 +28,7 @@ export default {
 
 	data() {
 		return {
+			cuentasIgnorar: ['54','53','5160','5299','5205','5105'],
 		}
 	},
 
