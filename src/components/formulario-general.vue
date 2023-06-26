@@ -263,11 +263,11 @@ export default {
 		buscarCuenta(cuenta, mapa) {
 			const cuentas = [];
 			//Busca en estas llaves
-			for (var [key, value] of mapa) {
-				if (key.startsWith(cuenta)) {
-					cuentas.push(key);
-					console.log(key + 'Test');
-					console.log(value);
+			for (var key of mapa) {
+				if (key[0].startsWith(cuenta)) {
+					cuentas.push(key[0]);
+					console.log(key[0] + 'Test');
+					//console.log(value);
 				}
 			}
 			return cuentas;
@@ -316,7 +316,8 @@ export default {
 			return tipo
 		},
 		articulo2() {
-
+			var cuentas = this.buscarCuenta('',this.b46)
+			console.log(cuentas);
 		},
 		articulo4() {
 			return new Promise((resolve) => {
@@ -533,15 +534,15 @@ export default {
 				.then(() => this.crearBalance())
 				.then(() => {
 					this.empresa(this.idEmpresa)
-					if (this.articulo == 6) {
-						console.log('Se ejecutara el articulo 6');
-						this.articulo6()
-					} else if (this.articulo == 3) {
-						console.log('Se ejecutara el articulo 3');
-						this.articulo3()
+					if (this.articulo == 2) {
+						console.log('Se ejecutara el articulo 2');
+						this.articulo2()
 					} else if (this.articulo == 4) {
 						console.log('Se ejecutara el articulo 4');
 						this.articulo4()
+					} else if (this.articulo == 6) {
+						console.log('Se ejecutara el articulo 6');
+						this.articulo6()
 					}
 				})
 		},

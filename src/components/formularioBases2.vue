@@ -7,11 +7,7 @@
 			<i class="bi bi-plus-circle"></i>
 		</button>
 		<ul class="list-group list-group-flush ">
-			<li v-for="(item, index) in cuentasIgnorar" class="list-group-item">
-				<button v-on:click="elim(index)" class="btn btn-danger pull-right" type="button"
-					id="button-addon2">DELETE</button>
-				{{ item.titol }}
-			</li>
+
 		</ul>
 
 	</div>
