@@ -23,7 +23,7 @@
 				<div class="w-100 m-1" style="text-align: center;">Articulos</div>
 				<div class="btn-group m-1 nav" role="group" aria-label="articulos">
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
-						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)" >
+						data-bs-target="#base2" name="btnradio" id="btnradio1" @click="setArticulo(2)">
 					<label class="btn btn-outline-secondary" for="btnradio1">Art 2</label>
 					<input required type="radio" class="nav-link btn-check form-check-input" data-bs-toggle="tab"
 						data-bs-target="#base3" name="btnradio" id="btnradio2" @click="setArticulo(3)" disabled>
@@ -142,8 +142,8 @@ export default {
 					this.balance.push(cuenta)
 				});
 				//Limpiar balance
-				console.log(this.balance.pop()+ '------ -');		//Ultimo elemento
-				console.log(this.balance.pop()+ '------ -');		//Ultimo elemento
+				console.log(this.balance.pop() + '------ -');		//Ultimo elemento
+				console.log(this.balance.pop() + '------ -');		//Ultimo elemento
 				this.balance.shift();								//Primer elemento
 				this.balance.forEach(linea => {
 					linea[5] = linea[5].replaceAll(',', '.');
@@ -180,7 +180,7 @@ export default {
 		generarArchivo(contenido, filen) {
 			return new Promise(resolve => {
 				const enlace = document.createElement("a");
-				const nombre = filen + '.txt'
+				const nombre = filen + this.empresaData[1] + '.txt'
 				enlace.setAttribute(
 					"href",
 					"data:text/plain;charset=utf-18," + encodeURIComponent(contenido)
@@ -204,6 +204,10 @@ export default {
 				this.generarArchivo(this.art2, 'Articulo2')
 				return 0;
 			}
+		},
+		obtenerDiferencia(arr1, arr2) {
+			const diferencia = arr1.filter(elemento => !arr2.includes(elemento));
+			return diferencia;
 		},
 		//Cargar documentos
 		cargarArchivoTerceros() {
@@ -280,7 +284,7 @@ export default {
 			var persona = this.terceros.get(id)
 			return persona
 		},
-		crearCabecera() {
+		crearCabecera(art = 46 ) {
 			var cabecera = Array()
 			cabecera.push('Año')
 			cabecera.push('Documento')
@@ -290,8 +294,10 @@ export default {
 			cabecera.push('Telefono')
 			cabecera.push('Correo')
 			cabecera.push('Codigo departamento')
-			cabecera.push('Base')
-			cabecera.push('Tarifa')
+			if(art != 2){
+				cabecera.push('Base')
+				cabecera.push('Tarifa')
+			}
 			cabecera.push('Valor')
 			cabecera.push('\n')
 			return cabecera
@@ -320,25 +326,81 @@ export default {
 			return tipo
 		},
 		articulo2() {
-			this.cuentasBuscar = ['5','6','7','14'];
+			this.cuentasBuscar = ['5', '6', '7', '14'];
+			this.cuentasExcluir = ['54', '53', '5160', '5299', '5205', '5105', '7205']
 			var cuentasA2 = new Array();
+			//Ingreso
 			this.cuentasBuscar.forEach(a => {
-				var cuentas = this.buscarCuenta(a,this.b46)
-				if (cuentas.length==0) {
-					console.log('Cuenta vacia: '+ a)
-				}else{
-					cuentasA2=cuentasA2.concat(cuentas)
+				var cuentas = this.buscarCuenta(a, this.b46)
+				if (cuentas.length == 0) {
+					console.log('Cuenta vacia: ' + a)
+				} else {
+					cuentasA2 = cuentasA2.concat(cuentas)
 				}
 			});
+			//Excluir
+			this.cuentasExcluir.forEach(a => {
+				var cuentas = this.buscarCuenta(a, this.b46)
+				if (cuentas.length == 0) {
+					console.log('Cuenta vacia: ' + a)
+				} else {
+					cuentasA2 = this.obtenerDiferencia(cuentasA2, cuentas)
+				}
+			});
+			//Obtener lineas
 			var lineas = new Array();
-				cuentasA2.forEach(res => {
-					var valores = this.b46.get(res);
-					valores.forEach(linea => {
-						linea.push(res.substring(res.length - 2))
-						console.log(linea);
-						lineas.push(linea);
-					});
+			cuentasA2.forEach(res => {
+				var valores = this.b46.get(res);
+				valores.forEach(linea => {
+					linea.push(res.substring(res.length - 2))
+					lineas.push(linea);
 				});
+			});
+			//Cabecera
+			this.art2.push(this.crearCabecera(2));
+			lineas.forEach(mov => {
+				var final = Array();
+				//Buscamos el tercero
+				if (parseFloat(mov[10]) - parseFloat(mov[8]) >= 5000000) {
+					var tercero = this.buscarPersona(mov[3])
+					//Definimos tipo de documento
+					var tipo = this.tipoDocumento(tercero[1])
+					//direccion
+					var direccion = '';
+					if (tercero[3] == '') {
+						direccion = this.empresaData[2];
+					} else {
+						direccion = tercero[3];
+					}
+					//Telefono
+					var telefono = '';
+					if (tercero[4] == '') {
+						telefono = '0';
+					} else {
+						telefono = tercero[4];
+					}
+					//correo
+					var correo = '';
+					if (tercero[9] == '') {
+						correo = 'NA';
+					} else {
+						correo = tercero[4];
+					}
+					//Se crea linea de informe
+					final.push(document.getElementById('año').value)
+					final.push(tipo)
+					final.push(mov[3])
+					final.push(tercero[2])
+					final.push(direccion)
+					final.push(telefono)
+					final.push(correo)
+					final.push(tercero[6])
+					final.push(parseInt(parseFloat(mov[10]) - parseFloat(mov[8])))
+					final.push('\n')
+					console.log(final);
+					this.art2.push(final);
+				}
+			})
 		},
 		articulo4() {
 			return new Promise((resolve) => {
@@ -360,7 +422,7 @@ export default {
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
-					if (parseFloat(mov[8]) - parseFloat(mov[10]) != 0) {
+					if (parseFloat(mov[10]) - parseFloat(mov[8]) != 0) {
 
 						var tercero = this.buscarPersona(mov[3])
 						//Definimos tipo de documento
