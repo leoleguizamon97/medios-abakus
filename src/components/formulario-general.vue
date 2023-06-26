@@ -100,6 +100,10 @@ export default {
 
 			this.art4 = new Array();
 			this.art6 = new Array();
+			this.art2 = new Array();
+
+			this.cuentasBuscar = new Array();
+			this.cuentasExcluir = new Array();
 
 			this.empresaData = new Array();
 
@@ -138,8 +142,9 @@ export default {
 					this.balance.push(cuenta)
 				});
 				//Limpiar balance
-				this.balance.pop();		//Ultimo elemento
-				this.balance.shift();	//Primer elemento
+				console.log(this.balance.pop()+ '------ -');		//Ultimo elemento
+				console.log(this.balance.pop()+ '------ -');		//Ultimo elemento
+				this.balance.shift();								//Primer elemento
 				this.balance.forEach(linea => {
 					linea[5] = linea[5].replaceAll(',', '.');
 					linea[8] = linea[8].replaceAll(',', '.');
@@ -266,8 +271,7 @@ export default {
 			for (var key of mapa) {
 				if (key[0].startsWith(cuenta)) {
 					cuentas.push(key[0]);
-					console.log(key[0] + 'Test');
-					//console.log(value);
+					//console.log(key[0] + 'Test');
 				}
 			}
 			return cuentas;
@@ -316,8 +320,25 @@ export default {
 			return tipo
 		},
 		articulo2() {
-			var cuentas = this.buscarCuenta('',this.b46)
-			console.log(cuentas);
+			this.cuentasBuscar = ['5','6','7','14'];
+			var cuentasA2 = new Array();
+			this.cuentasBuscar.forEach(a => {
+				var cuentas = this.buscarCuenta(a,this.b46)
+				if (cuentas.length==0) {
+					console.log('Cuenta vacia: '+ a)
+				}else{
+					cuentasA2=cuentasA2.concat(cuentas)
+				}
+			});
+			var lineas = new Array();
+				cuentasA2.forEach(res => {
+					var valores = this.b46.get(res);
+					valores.forEach(linea => {
+						linea.push(res.substring(res.length - 2))
+						console.log(linea);
+						lineas.push(linea);
+					});
+				});
 		},
 		articulo4() {
 			return new Promise((resolve) => {
@@ -559,10 +580,12 @@ export default {
 			balance: new Array(),
 			art4: new Array(),
 			art6: new Array(),
-
-			//Balance para art 4 y 6
+			art2: new Array(),
+			//Balance para art 4 , 6 y 2
 			b46: new Map(),
-
+			//Cuentas a buscar
+			cuentasBuscar: new Array(),
+			cuentasExcluir: new Array(),
 			//Files
 			archivoTerceros: null,
 			archivoBalance: null,
