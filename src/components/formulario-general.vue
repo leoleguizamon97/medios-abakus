@@ -139,7 +139,9 @@ export default {
 					p.split(';').forEach(
 						atributo => { cuenta.push(atributo) }
 					);
+					//console.log(cuenta[3] + '???');
 					this.balance.push(cuenta)
+				
 				});
 				//Limpiar balance
 				console.log(this.balance.pop() + '------ -');		//Ultimo elemento
@@ -163,10 +165,12 @@ export default {
 							//console.log('Cabecera: '+head+' creada');
 						}
 						var id = element[3].split('-');
-						id[0] = id[0].replaceAll(',', '')
+						id[0] = id[0].replace(/\D/g, '')
 						//console.log(head,id[0]);
 						element[3] = id[0]
-						btemp.get(head).push(element)
+						if(id[0 ] != '899999960'){
+							btemp.get(head).push(element)
+						}
 					} else {
 						var fila = element[0].split(' ');
 						head = fila[0];
@@ -180,7 +184,7 @@ export default {
 		generarArchivo(contenido, filen) {
 			return new Promise(resolve => {
 				const enlace = document.createElement("a");
-				const nombre = filen + this.empresaData[1] + '.txt'
+				const nombre = filen +'-'+ this.empresaData[1] + '.txt'
 				enlace.setAttribute(
 					"href",
 					"data:text/plain;charset=utf-18," + encodeURIComponent(contenido)
@@ -284,22 +288,32 @@ export default {
 			var persona = this.terceros.get(id)
 			return persona
 		},
-		crearCabecera(art = 46 ) {
+		crearCabecera(art) {
 			var cabecera = Array()
-			cabecera.push('Año')
-			cabecera.push('Documento')
-			cabecera.push('Id')
-			cabecera.push('Nombre')
-			cabecera.push('Direccion')
-			cabecera.push('Telefono')
-			cabecera.push('Correo')
-			cabecera.push('Codigo departamento')
-			if(art != 2){
-				cabecera.push('Base')
-				cabecera.push('Tarifa')
+			cabecera.push('')
+			cabecera.push('VIGENCIA')
+			cabecera.push('TIPO DOCUMENTO')
+			cabecera.push('NUMERO DOCUMENTO')
+			cabecera.push('NOMBRE O RAZON SOCIAL')
+			cabecera.push('DIRECCION DE NOTIFICACION')
+			cabecera.push('TELEFONO')
+			cabecera.push('E-MAIL')
+			cabecera.push('CODIGO MUNICIPIO')
+			cabecera.push('CODIGO DEPARTAMENTO')
+			if(art == 2){
+				cabecera.push('CONCEPTO PAGO O ABONO EN CUENTA')
+				cabecera.push('VALOR COMPRAS ANUAL')
+				cabecera.push('VALOR DEVOLUCIONES')
+			}else if(art == 4){
+				cabecera.push('BASE RETENCION')
+				cabecera.push('TARIFA RETENCION APLICADA')
+				cabecera.push('MONTO RETENCION ANUAL')
+			}else if(art == 6){
+				cabecera.push('MONTO PAGO')
+				cabecera.push('TARIFA RETENCION APLICADA')
+				cabecera.push('MONTO RETENCION ANUAL')
 			}
-			cabecera.push('Valor')
-			cabecera.push('\n')
+			
 			return cabecera
 		},
 		tipoDocumento(tipo) {
@@ -326,8 +340,8 @@ export default {
 			return tipo
 		},
 		articulo2() {
-			this.cuentasBuscar = ['5', '6', '7', '14'];
-			this.cuentasExcluir = ['54', '53', '5160', '5299', '5205', '5105', '7205']
+			this.cuentasBuscar = ['5', '6', '7', '14','15'];
+			this.cuentasExcluir = ['54', '53', '5160', '5299', '5205', '5105', '7201']
 			var cuentasA2 = new Array();
 			//Ingreso
 			this.cuentasBuscar.forEach(a => {
@@ -361,8 +375,9 @@ export default {
 			lineas.forEach(mov => {
 				var final = Array();
 				//Buscamos el tercero
-				if (parseFloat(mov[10]) - parseFloat(mov[8]) >= 5000000) {
+				if (parseFloat(mov[8]) - parseFloat(mov[10]) >= (38004*70)) {
 					var tercero = this.buscarPersona(mov[3])
+					console.log(mov[3]);
 					//Definimos tipo de documento
 					var tipo = this.tipoDocumento(tercero[1])
 					//direccion
@@ -387,6 +402,7 @@ export default {
 						correo = tercero[4];
 					}
 					//Se crea linea de informe
+					final.push('\n')
 					final.push(document.getElementById('año').value)
 					final.push(tipo)
 					final.push(mov[3])
@@ -395,16 +411,18 @@ export default {
 					final.push(telefono)
 					final.push(correo)
 					final.push(tercero[6])
-					final.push(parseInt(parseFloat(mov[10]) - parseFloat(mov[8])))
-					final.push('\n')
-					console.log(final);
+					final.push(tercero[6].substring(0,2))
+					final.push(mov[mov.length - 1])
+					final.push(parseInt(mov[8]))
+					final.push(parseInt(mov[10]))
+					//console.log(final + ' FINAL ');
 					this.art2.push(final);
 				}
 			})
 		},
 		articulo4() {
 			return new Promise((resolve) => {
-				var cuenta = this.buscarCuenta('236801', this.b46);
+				var cuenta = this.buscarCuenta('236805', this.b46);
 				//obtener lineas de articulo
 				var lineas = new Array();
 				cuenta.forEach(res => {
@@ -418,12 +436,11 @@ export default {
 				});
 				//crear articulo
 				//cabecera
-				this.art4.push(this.crearCabecera());
+				this.art4.push(this.crearCabecera(4));
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
 					if (parseFloat(mov[10]) - parseFloat(mov[8]) != 0) {
-
 						var tercero = this.buscarPersona(mov[3])
 						//Definimos tipo de documento
 						var tipo = this.tipoDocumento(tercero[1])
@@ -485,6 +502,7 @@ export default {
 						//definimos la tarifa
 						var base = (parseFloat(mov[10]) - parseFloat(mov[8])) / parseFloat(tarifa) * 1000
 						//Se crea linea de informe
+						final.push('\n')
 						final.push(document.getElementById('año').value)
 						final.push(tipo)
 						final.push(mov[3])
@@ -493,10 +511,10 @@ export default {
 						final.push(telefono)
 						final.push(correo)
 						final.push(tercero[6])
+						final.push(tercero[6].substring(0,2))
 						final.push(parseInt(base))
 						final.push(tarifa)
 						final.push(parseInt(parseFloat(mov[10]) - parseFloat(mov[8])))
-						final.push('\n')
 						console.log(final);
 						this.art4.push(final);
 					}
@@ -521,12 +539,13 @@ export default {
 				});
 				//crear articulo
 				//cabecera
-				this.art6.push(this.crearCabecera());
+				this.art6.push(this.crearCabecera(6));
 				lineas.forEach(mov => {
 					var final = Array();
 					//Buscamos el tercero
 					if (parseFloat(mov[8]) - parseFloat(mov[10]) != 0) {
 						var tercero = this.buscarPersona(mov[3])
+						console.log(mov[3]);
 						//Definimos tipo de documento
 						var tipo = this.tipoDocumento(tercero[1])
 						//definimos la base
@@ -587,6 +606,7 @@ export default {
 						//definimos la tarifa
 						var base = (parseFloat(mov[8]) - parseFloat(mov[10])) / parseFloat(tarifa) * 1000
 						//Se crea linea de informe
+						final.push('\n')
 						final.push(document.getElementById('año').value)
 						final.push(tipo)
 						final.push(mov[3])
@@ -595,10 +615,10 @@ export default {
 						final.push(telefono)
 						final.push(correo)
 						final.push(tercero[6])
+						final.push(tercero[6].substring(0,2))
 						final.push(parseInt(base))
 						final.push(tarifa)
 						final.push(parseInt(parseFloat(mov[8]) - parseFloat(mov[10])))
-						final.push('\n')
 						console.log(final);
 						this.art6.push(final);
 					}
