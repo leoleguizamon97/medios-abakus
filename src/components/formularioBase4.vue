@@ -34,8 +34,20 @@
 			<input type="number"  ref= "base408" id="base408" class="form-control" defaultValue="0.19" placeholder="Tarifa cuenta 08" aria-label="base08" step="0.01" required>
 		</div>
 		<div class="input-group mb-3">
-			<span class="input-group-text" id="cuenta06">Cuenta -09</span>
+			<span class="input-group-text" id="cuenta09">Cuenta -09</span>
 			<input type="number"  ref= "base409" id="base409" class="form-control" defaultValue="0.19" placeholder="Tarifa cuenta 09" aria-label="base09" step="0.01" required>
+		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="cuenta10">Cuenta -10</span>
+			<input type="number"  ref= "base410" id="base410" class="form-control" defaultValue="6,9" placeholder="Tarifa cuenta 10" aria-label="base10" step="0.01" required>
+		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="cuenta15">Cuenta -15</span>
+			<input type="number"  ref= "base415" id="base415" class="form-control" defaultValue="9,66" placeholder="Tarifa cuenta 15" aria-label="base15" step="0.01" required>
+		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="cuenta20">Cuenta -20</span>
+			<input type="number"  ref= "base420" id="base420" class="form-control" defaultValue="11,04" placeholder="Tarifa cuenta 20" aria-label="base20" step="0.01" required>
 		</div>
 	</div>
 </template>

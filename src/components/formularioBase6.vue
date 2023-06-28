@@ -37,6 +37,10 @@
 			<span class="input-group-text" id="cuenta06">Cuenta -09</span>
 			<input type="number"  ref= "base609" id="base609" class="form-control" placeholder="Tarifa cuenta 09" aria-label="base09" defaultValue="0.19" step="0.01" required>
 		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="cuenta06">Cuenta -10</span>
+			<input type="number"  ref= "base610" id="base610" class="form-control" placeholder="Tarifa cuenta 10" aria-label="base10" defaultValue="9,66" step="0.01" required>
+		</div>
 	</div>
 </template>
 
