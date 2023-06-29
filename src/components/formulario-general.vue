@@ -168,7 +168,7 @@ export default {
 						id[0] = id[0].replace(/\D/g, '')
 						//console.log(head,id[0]);
 						element[3] = id[0]
-						if (id[0] == '899999960' || id[0] == '899999061') {
+						if (id[0] == '899999960' || id[0] == '899999061'|| id[0] == '899999861') {
 							console.log('deleted');
 						} else {
 							btemp.get(head).push(element)
@@ -343,7 +343,7 @@ export default {
 		},
 		articulo2() {
 			this.cuentasBuscar = ['5', '6', '7', '14', '15'];
-			this.cuentasExcluir = ['54', '53', '5160', '5299', '5205', '5105', '7201']
+			this.cuentasExcluir = ['54', '53', '5160', '5299', '5205', '5105', '7201','511570']
 			var cuentasA2 = new Array();
 			//Ingreso
 			this.cuentasBuscar.forEach(a => {
